@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MedallionRandom, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MedallionRandom.1.1.0\lib\net452\MedallionRandom.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -45,8 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bankrupcy.cs" />
     <Compile Include="ChanceField.cs" />
     <Compile Include="Choice.cs" />
+    <Compile Include="ChoseBuildEventArgs.cs" />
     <Compile Include="ChoseMortgageEventArgs.cs" />
     <Compile Include="ChosePayMortgageEventArgs.cs" />
     <Compile Include="ChoseTradeEventArgs.cs" />
@@ -55,6 +60,7 @@
     <Compile Include="Dice.cs" />
     <Compile Include="DiceEventArgs.cs" />
     <Compile Include="FieldBoughtEventArgs.cs" />
+    <Compile Include="FieldBuildableFilter.cs" />
     <Compile Include="FieldMortgagedEventArgs.cs" />
     <Compile Include="FieldRentableFilter.cs" />
     <Compile Include="Fields.cs" />
@@ -75,6 +81,7 @@
     <Compile Include="OtherFields.cs" />
     <Compile Include="OwnerSpecification.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerLiquidatedEventArgs.cs" />
     <Compile Include="PlayerMovedEventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Prompt.cs" />

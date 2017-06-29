@@ -16,6 +16,7 @@ namespace Monopoly
         public int CurrentRent { get; set; }
         public string Color { get; set; }
         public bool CanMortgage { get; set; }
+        public bool CanTrade { get; set; }
 
         public int Houses { get; set; }
         public int HousePrice { get; set; }
@@ -26,6 +27,7 @@ namespace Monopoly
         {
             Rent = new int[7];
             CanMortgage = true;
+            CanTrade = true;
         }
 
         public int MortgageValue => Price / 2;
@@ -82,16 +84,6 @@ namespace Monopoly
             Console.WriteLine($"Houses: {Houses}");
             Console.WriteLine("Under mortgage: {0}", UnderMortgage ? "Yes" : "No");
             Console.WriteLine();
-        }
-
-        public void OnPlayerMoved(object sender, PlayerMovedEventArgs e)
-        {
-            if (FieldIndex == e.Player.Position)
-            {
-                e.Player.FieldPosition = FieldName;
-                PrintFieldStats();
-                FieldEffect(e.Player, e.OtherPlayers);
-            }
         }
     }
 }

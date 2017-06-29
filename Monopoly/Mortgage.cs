@@ -4,21 +4,23 @@ namespace Monopoly
 {
     public class Mortgage
     {
-        public void PutUnderMortgage(Player player, IFieldRentable field)
+        private void PutUnderMortgage(Player player, IFieldRentable field)
         {
             player.Money += field.MortgageValue;
             field.UnderMortgage = true;
             field.CanMortgage = false;
+
             OnFieldMortgaged(this, field);
         }
 
-        public void PayOffMortgage(Player player, IFieldRentable field)
+        private void PayOffMortgage(Player player, IFieldRentable field)
         {
             if (player.Money >= field.MortgageValue + field.MortgageValue / 10)
             {
                 player.Money -= field.MortgageValue + field.MortgageValue / 10;
                 field.UnderMortgage = false;
                 field.CanMortgage = true;
+
                 OnMortgagePayed(this, field);
             }
             else
@@ -33,9 +35,17 @@ namespace Monopoly
             PutUnderMortgage(e.Player, e.Field);
         }
 
-        public void OnChosePayMortgage(object sender, ChosePayMortgageEventArgs e)
+        public void OnChosePayMortgage(object sender, ChoseMortgageEventArgs e)
         {
             PayOffMortgage(e.Player, e.Field);
+        }
+
+        public void OnPlayerLiquidated(object sender, PlayerLiquidatedEventArgs e)
+        {
+            foreach (var field in e.AllPlayerFields)
+            {
+                PutUnderMortgage(e.PlayerLiquidated, field);
+            }
         }
 
         public event EventHandler<FieldMortgagedEventArgs> FieldMortgaged;

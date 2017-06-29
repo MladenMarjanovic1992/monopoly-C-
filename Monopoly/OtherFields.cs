@@ -19,14 +19,5 @@ namespace Monopoly
             Console.WriteLine($"Field position: {FieldIndex}");
             Console.WriteLine();
         }
-
-        public void OnPlayerMoved(object sender, PlayerMovedEventArgs e)
-        {
-            if (FieldIndex == e.Player.Position)
-            {
-                e.Player.FieldPosition = FieldName;
-                FieldEffect(e.Player, e.OtherPlayers);
-            }
-        }
     }
 }

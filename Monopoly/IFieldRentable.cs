@@ -12,7 +12,8 @@ namespace Monopoly
         int CurrentRent { get; set; }
         string Color { get; set; }
         bool CanMortgage { get; set; }
+        bool CanTrade { get; set; }
 
-        void OnPlayerMoved(object sender, PlayerMovedEventArgs e);
+        //void OnPlayerMoved(object sender, PlayerMovedEventArgs e);
     }
 }

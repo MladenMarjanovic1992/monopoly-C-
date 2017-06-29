@@ -1,28 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Monopoly
 {
     public class Player
     {
-        public string PlayerName { get; set; }
+        public string PlayerName { get; }
         public int Money { get; set; }
         public int Position { get; set; }
-        public string FieldPosition { get; set; }
         public bool CurrentPlayer { get; set; }
+        public bool InJail { get; set; }
+        public int RollsUntilOut { get; set; }
+        private IField _field;
 
-        public Player(string name, int money)
+        public Player(string name, int money, IField startField)
         {
             PlayerName = name;
             Money = money;
-            FieldPosition = "Start";
+            _field = startField;
         }
 
-        public void Move(int rolled)
+        public void Move(int rolled, List<IField> map)
         {
             if (Position + rolled < 40)
                 Position += rolled;
             else
+            {
                 Position += rolled - 40;
+                Money += 200;
+            }
+
+            _field = map[Position];
         }
 
         public void PrintStats()
@@ -30,7 +38,7 @@ namespace Monopoly
             Console.WriteLine();
             Console.WriteLine($"Name: {PlayerName.ToUpper()}");
             Console.WriteLine($"Money: {Money}");
-            Console.WriteLine($"Position: {FieldPosition}");
+            Console.WriteLine($"Position: {_field.FieldName}");
             Console.WriteLine();
         }
 

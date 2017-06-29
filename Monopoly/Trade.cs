@@ -36,6 +36,31 @@ namespace Monopoly
             }
         }
 
+        public void OnPlayerLiquidated(object sender, PlayerLiquidatedEventArgs e)
+        {
+            foreach (var field in e.AllPlayerFields)
+            {
+                SellField(e.PlayerLiquidated, field, 0);
+
+                if (e.StakeHolders.Count == 1)
+                    BuyField(e.StakeHolders[0], field, 0);
+                else
+                {
+                    foreach (var player in e.StakeHolders)
+                    {
+                        player.PrintStats();
+                    }
+
+                    Console.WriteLine("Auction!");
+                    var highestBidder = Prompt.ChoosePlayer(e.StakeHolders, $"Who won the auction for {field.FieldName}?");
+                    var highestBid = Prompt.EnterAmount(highestBidder, "What was the highest bid?");
+
+                    BuyField(highestBidder, field, highestBid);
+                }
+                    
+            }
+        }
+
         protected virtual void OnFieldBought(Player player, IFieldRentable field)
         {
             FieldBought?.Invoke(this, new FieldBoughtEventArgs(){ NewOwner = player, Field = field });

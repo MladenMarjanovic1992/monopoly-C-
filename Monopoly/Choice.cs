@@ -24,9 +24,12 @@ namespace Monopoly
 
         public event EventHandler ChoseRoll;
         public event EventHandler ChoseEndTurn;
+        public event EventHandler ChoseQuitGame;
         public event EventHandler<ChoseTradeEventArgs> ChoseTrade;
         public event EventHandler<ChoseMortgageEventArgs> ChoseMortgage;
-        public event EventHandler<ChosePayMortgageEventArgs> ChosePayMortgage;
+        public event EventHandler<ChoseMortgageEventArgs> ChosePayMortgage;
+        public event EventHandler<ChoseBuildEventArgs> ChoseBuildHouse;
+        public event EventHandler<ChoseBuildEventArgs> ChoseSellHouse;
 
         public void Roll()
         {
@@ -45,9 +48,9 @@ namespace Monopoly
             var fieldFilter = new FieldRentableFilter();
             var opponentFields = fieldFilter.FilterFields(_fields.BuyableFields, new OwnerSpecification(opponent)).ToList();
             var playerFields = fieldFilter.FilterFields(_fields.BuyableFields, new OwnerSpecification(_currentPlayer)).ToList();
-            var fieldToBuy = Prompt.ChooseFieldRentable(opponentFields, "Which field do you want to buy?");
+            var fieldToBuy = Prompt.ChooseField(opponentFields, "Which field do you want to buy?");
             var offerMoney = Prompt.EnterAmount(_currentPlayer, "How much money are you offering?");
-            var fieldToSell = Prompt.ChooseFieldRentable(playerFields, "Which field do you want to sell?");
+            var fieldToSell = Prompt.ChooseField(playerFields, "Which field do you want to sell?");
             var askMoney = Prompt.EnterAmount(opponent, "How much money are you asking?");
 
             if(Prompt.YesOrNo("Confirm trade? (y/n)"))
@@ -56,9 +59,8 @@ namespace Monopoly
 
         public void Mortgage()
         {
-            var fieldFilter = new FieldRentableFilter();
-            var playerFields = fieldFilter.FilterFields(_fields.BuyableFields, new MortgageSpecification(_currentPlayer, true)).ToList();
-            var fieldToMortgage = Prompt.ChooseFieldRentable(playerFields, "Which field do you want to mortgage?");
+            var playerFields = new FieldRentableFilter().FilterFields(_fields.BuyableFields, new MortgageSpecification(_currentPlayer, true)).ToList();
+            var fieldToMortgage = Prompt.ChooseField(playerFields, "Which field do you want to mortgage?");
 
             if(fieldToMortgage != null)
                 OnChoseMortgage(fieldToMortgage, _currentPlayer);
@@ -66,12 +68,54 @@ namespace Monopoly
 
         public void PayMortgage()
         {
-            var fieldFilter = new FieldRentableFilter();
-            var playerFields = fieldFilter.FilterFields(_fields.BuyableFields, new MortgageSpecification(_currentPlayer, false)).ToList();
-            var fieldToPayMortgage = Prompt.ChooseFieldRentable(playerFields, "Which field do you want to pay mortgage for?");
+            var playerFields = new FieldRentableFilter().FilterFields(_fields.BuyableFields, new MortgageSpecification(_currentPlayer, false)).ToList();
+            var fieldToPayMortgage = Prompt.ChooseField(playerFields, "Which field do you want to pay mortgage for?");
 
             if (fieldToPayMortgage != null)
                 OnChosePayMortgage(fieldToPayMortgage, _currentPlayer);
+        }
+
+        public void BuildHouse()
+        {
+            var buildableFields = _fields.PropertyFields.Where(f => f.Owner == _currentPlayer && f.CanBuild).ToList();
+            var fieldToBuild = Prompt.ChooseField(buildableFields, "Which field do you want to build on?");
+
+            if(fieldToBuild != null)
+                OnChoseBuildHouse(fieldToBuild, _currentPlayer);
+        }
+
+        public void SellHouse()
+        {
+            var unbuildableFields = _fields.PropertyFields.Where(f => f.Owner == _currentPlayer && f.CanRemoveHouse).ToList();
+            var fieldToUnbuild = Prompt.ChooseField(unbuildableFields, "Where do you want to sell a house?");
+
+            if(fieldToUnbuild != null)
+                OnChoseSellHouse(fieldToUnbuild, _currentPlayer);
+        }
+
+        public void CheckFieldStats()
+        {
+            Prompt.ChooseField(_fields.BuyableFields, "Which field do you want to see?").PrintFieldStats();
+        }
+
+        public void ShowPlayerStats()
+        {
+            var player = Prompt.ChoosePlayer(_players, "Whose stats do you want to see?");
+            player.PrintStats();
+
+            var fieldsOwned = new FieldRentableFilter().FilterFields(_fields.BuyableFields, new OwnerSpecification(player));
+            Console.Write("Owns: ");
+            foreach (var field in fieldsOwned)
+            {
+                Console.Write($"{field.FieldName}; ");
+            }
+            Console.WriteLine();
+        }
+
+        public void QuitGame()
+        {
+            if (Prompt.YesOrNo("Do you really want to quit?"))
+                OnChoseQuitGame();
         }
 
         public void AddAction(string actionName, Action action, bool condition)
@@ -110,7 +154,22 @@ namespace Monopoly
 
         protected virtual void OnChosePayMortgage(IFieldRentable field, Player player)
         {
-            ChosePayMortgage?.Invoke(this, new ChosePayMortgageEventArgs(){Field = field, Player = player});
+            ChosePayMortgage?.Invoke(this, new ChoseMortgageEventArgs(){Field = field, Player = player});
+        }
+
+        protected virtual void OnChoseBuildHouse(PropertyField field, Player player)
+        {
+            ChoseBuildHouse?.Invoke(this, new ChoseBuildEventArgs(){Player = player, PropertyField = field});
+        }
+
+        protected virtual void OnChoseSellHouse(PropertyField field, Player player)
+        {
+            ChoseSellHouse?.Invoke(this, new ChoseBuildEventArgs() { Player = player, PropertyField = field });
+        }
+
+        protected virtual void OnChoseQuitGame()
+        {
+            ChoseQuitGame?.Invoke(this, EventArgs.Empty);
         }
     }
 }

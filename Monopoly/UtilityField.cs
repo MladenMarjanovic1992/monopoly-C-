@@ -15,11 +15,13 @@ namespace Monopoly
         public int CurrentRent { get; set; }
         public string Color { get; set; }
         public bool CanMortgage { get; set; }
+        public bool CanTrade { get; set; }
 
         public UtilityField()
         {
             Rent = new int[2];
             CanMortgage = true;
+            CanTrade = true;
         }
 
         public int MortgageValue => Price / 2;
@@ -31,7 +33,7 @@ namespace Monopoly
             if (Owner != null && Owner != currentPlayer && !UnderMortgage)
             {
                 var diceRoll = new Random();
-                var payedSum = CurrentRent * (diceRoll.Next(1, 7) + diceRoll.Next(1, 7))
+                var payedSum = CurrentRent * (diceRoll.Next(1, 7) + diceRoll.Next(1, 7));
 
                 currentPlayer.Money -= payedSum;
                 Owner.Money += payedSum;
@@ -71,15 +73,6 @@ namespace Monopoly
             Console.WriteLine("Owner: {0}", Owner == null ? "Not owned" : Owner.PlayerName);
             Console.WriteLine("Under mortgage: {0}", UnderMortgage ? "Yes" : "No");
             Console.WriteLine();
-        }
-
-        public void OnPlayerMoved(object sender, PlayerMovedEventArgs e)
-        {
-            if (FieldIndex == e.Player.Position)
-            {
-                e.Player.FieldPosition = FieldName;
-                FieldEffect(e.Player, e.OtherPlayers);
-            }
         }
     }
 }

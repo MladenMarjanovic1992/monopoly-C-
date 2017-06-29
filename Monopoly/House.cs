@@ -4,22 +4,48 @@ namespace Monopoly
 {
     public class House
     {
-        public void BuildHouse(Player player, IFieldBuildable field)
+        private void BuildHouse(Player player, IFieldBuildable field)
         {
-            field.Houses += 1;
-            player.Money -= field.HousePrice;
-            field.CurrentRent = field.Rent[field.Houses + 1];
+            if (player.Money >= field.HousePrice)
+            {
+                field.Houses += 1;
+                player.Money -= field.HousePrice;
+                field.CurrentRent = field.Rent[field.Houses + 1];
 
-            OnHouseBuilt(field);
+                OnHouseBuilt(field);
+            }
+            else
+            {
+                Console.WriteLine("Not enough money");
+            }
+            
         }
 
-        public void SellHouse(Player player, IFieldBuildable field)
+        private void SellHouse(Player player, IFieldBuildable field)
         {
             field.Houses -= 1;
             player.Money += field.HousePrice / 2;
             field.CurrentRent = field.Rent[field.Houses + 1];
 
             OnHouseSold(field);
+        }
+
+        public void OnChoseBuildHouse(object sender, ChoseBuildEventArgs e)
+        {
+            BuildHouse(e.Player, e.PropertyField);
+        }
+
+        public void OnChoseSellHouse(object sender, ChoseBuildEventArgs e)
+        {
+            SellHouse(e.Player, e.PropertyField);
+        }
+
+        public void OnPlayerLiquidated(object sender, PlayerLiquidatedEventArgs e)
+        {
+            foreach (var field in e.PropertyFieldsWithHouses)
+            {
+                SellHouse(e.PlayerLiquidated, field);
+            }
         }
 
         public event EventHandler<HouseBuiltEventArgs> HouseBuilt;

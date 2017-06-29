@@ -26,7 +26,7 @@ namespace Monopoly
             }
         }
 
-        public static Player ChoosePlayer(List<Player> players, string question) // refactor method display logic!!!
+        public static Player ChoosePlayer(List<Player> players, string question)
         {
             while (true)
             {
@@ -45,7 +45,29 @@ namespace Monopoly
             }
         }
 
-        public static IFieldRentable ChooseFieldRentable(List<IFieldRentable> fields, string question) // refactor method display logic!!!
+        public static IFieldRentable ChooseField(List<IFieldRentable> fields, string question)
+        {
+            while (true)
+            {
+                Console.WriteLine(question);
+
+                for (var i = 0; i < fields.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {fields[i].FieldName}");
+                }
+                Console.WriteLine($"{fields.Count + 1}. None");
+
+                int.TryParse(Console.ReadLine(), out int answer);
+
+                if (answer >= 1 && answer <= fields.Count)
+                    return fields[answer - 1];
+                if (answer == fields.Count + 1)
+                    return null;
+                Console.WriteLine("Please enter a valid number");
+            }
+        }
+
+        public static PropertyField ChooseField(List<PropertyField> fields, string question)
         {
             while (true)
             {

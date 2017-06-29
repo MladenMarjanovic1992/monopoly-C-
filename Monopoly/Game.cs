@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Monopoly
 {
     public class Game
     {
-        public List<Player> Players { get; set; } // will be set to private readonly
+        public List<Player> Players { get; set; }
         public Player CurrentPlayer { get; set; }
         public bool AlreadyRolled { get; set; }
+        public bool GameOver { get; set; }
 
-        public event EventHandler<PlayerMovedEventArgs> PlayerMoved;
+        private readonly List<IField> _map;
+        private readonly Bankrupcy _bankrupcy;
 
-        public Game(List<Player> players)
+        public Game(List<Player> players, List<IField> map, Bankrupcy bankrupcy)
         {
             Players = players;
+            _map = map;
+            _bankrupcy = bankrupcy;
             CurrentPlayer = Players[0];
             CurrentPlayer.CurrentPlayer = true;
         }
@@ -38,22 +43,68 @@ namespace Monopoly
 
         public void OnDiceRolled(object sender, DiceEventArgs e)
         {
-            CurrentPlayer.Move(e.Rolled1 + e.Rolled2);
+            while (CurrentPlayer.InJail && CurrentPlayer.RollsUntilOut > 0)
+            {
+                if (e.Rolled1 != e.Rolled2)
+                {
+                    e.Rolled1 = 0;
+                    e.Rolled2 = 0;
+                    CurrentPlayer.RollsUntilOut -= 1;
+                }
+                else
+                {
+                    CurrentPlayer.InJail = false;
+                    CurrentPlayer.RollsUntilOut = 0;
+                }
+            }
+
+            CurrentPlayer.Move(e.Rolled1 + e.Rolled2, _map);
+
+            var otherPlayers = Players.Where(p => !p.CurrentPlayer).ToList();
+
+            _map[CurrentPlayer.Position].FieldEffect(CurrentPlayer, otherPlayers);
+
             if (e.Rolled1 != e.Rolled2)
                 AlreadyRolled = true;
-            OnPlayerMoved();
+
+            if (_bankrupcy.IsBankrupt(CurrentPlayer))
+            {
+                Console.WriteLine($"{CurrentPlayer.PlayerName.ToUpper()} is bankrupt");
+                _bankrupcy.Liquidate(CurrentPlayer, otherPlayers);
+            }
+                
+        }
+
+        public void OnWentToJail(object sender, EventArgs e)
+        {
+            CurrentPlayer.Move(-(CurrentPlayer.Position - 20), _map);
+            CurrentPlayer.InJail = true;
+            CurrentPlayer.RollsUntilOut = 3;
+        }
+
+        public void OnPlayerLiquidated(object sender, PlayerLiquidatedEventArgs e)
+        {
+            EndTurn();
+            Players.Remove(e.PlayerLiquidated);
+
+            if (Players.Count == 1)
+            {
+                Console.WriteLine($"{Players[0].PlayerName.ToUpper()} has won the game!");
+                GameOver = true;
+            }
         }
 
         public void OnChoseEndTurn(object sender, EventArgs e)
         {
-            EndTurn();
+            if(CurrentPlayer.Money >= 0)
+                EndTurn();
+            else
+                Console.WriteLine($"You owe {-CurrentPlayer.Money}$! Sell houses or mortgage properties to settle your debt!");
         }
 
-        protected virtual void OnPlayerMoved()
+        public void OnChoseQuitGame(object sender, EventArgs e)
         {
-            var otherPlayers = Players.FindAll(p => !p.CurrentPlayer);
-
-            PlayerMoved?.Invoke(this, new PlayerMovedEventArgs() { Player = CurrentPlayer, OtherPlayers = otherPlayers });
+            GameOver = true;
         }
     }
 }

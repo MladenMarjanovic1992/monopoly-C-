@@ -17,7 +17,7 @@ namespace Monopoly
 
         public void OnFieldBought(object sender, FieldBoughtEventArgs e)
         {
-            if (e.Field.Color == ColorName && Fields.TrueForAll(f => f.Owner == e.NewOwner))
+            if (e.Field.Color == ColorName && Fields.TrueForAll(f => f.Owner == e.NewOwner && !f.UnderMortgage))
             {
                 Owner = e.NewOwner;
 
@@ -50,6 +50,7 @@ namespace Monopoly
                 foreach (var field in Fields)
                 {
                     field.CanMortgage = false;
+                    field.CanTrade = false;
                 }
 
                 if (Fields.TrueForAll(f => f.Houses == e.Field.Houses) && Fields.TrueForAll(f => f.Houses < 5))
@@ -100,6 +101,7 @@ namespace Monopoly
                     foreach (var field in Fields)
                     {
                         field.CanMortgage = true;
+                        field.CanTrade = true;
                     }
                 }
             }
@@ -120,7 +122,7 @@ namespace Monopoly
 
         public void OnMortgagePayed(object sender, MortgagePayedEventArgs e)
         {
-            if (e.Field.Color == ColorName && e.Field.Owner == Owner)
+            if (e.Field.Color == ColorName && e.Field.Owner == Owner && Fields.TrueForAll(f => !f.UnderMortgage))
             {
                 foreach (var field in Fields)
                 {

@@ -8,12 +8,13 @@ namespace Monopoly
         public string FieldName { get; set; }
         public int FieldIndex { get; set; }
 
+        public event EventHandler WentToJail; 
+
         public void FieldEffect(Player currentPlayer, List<Player> otherPlayers)
         {
             PrintFieldStats();
 
-            currentPlayer.Position = 10;
-            currentPlayer.FieldPosition = FieldName;
+            OnWentToJail();
         }
 
         public void PrintFieldStats()
@@ -23,13 +24,9 @@ namespace Monopoly
             Console.WriteLine();
         }
 
-        public void OnPlayerMoved(object sender, PlayerMovedEventArgs e)
+        protected virtual void OnWentToJail()
         {
-            if (FieldIndex == e.Player.Position)
-            {
-                e.Player.FieldPosition = FieldName;
-                FieldEffect(e.Player, e.OtherPlayers);
-            }
+            WentToJail?.Invoke(this, EventArgs.Empty);
         }
     }
 }

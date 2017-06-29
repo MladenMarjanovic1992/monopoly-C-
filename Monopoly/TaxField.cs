@@ -8,7 +8,7 @@ namespace Monopoly
         public string FieldName { get; set; }
         public int FieldIndex { get; set; }
 
-        public int TaxAmount { get; set; } // implement when doing chance and chest
+        public int TaxAmount { get; set; }
 
         public void FieldEffect(Player currentPlayer, List<Player> otherPlayers)
         {
@@ -23,16 +23,6 @@ namespace Monopoly
             Console.WriteLine($"Field position: {FieldIndex}");
             Console.WriteLine($"Tax amount: {TaxAmount}");
             Console.WriteLine();
-        }
-
-        public void OnPlayerMoved(object sender, PlayerMovedEventArgs e)
-        {
-            if (FieldIndex == e.Player.Position)
-            {
-                e.Player.FieldPosition = FieldName;
-                PrintFieldStats();
-                FieldEffect(e.Player, e.OtherPlayers);
-            }
         }
     }
 }
