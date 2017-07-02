@@ -121,5 +121,33 @@ namespace Monopoly
                 Console.WriteLine("Please enter a valid amount");
             }
         }
+
+        public static string EnterPlayerName(int playerNumber)
+        {
+            while (true)
+            {
+                Console.WriteLine($"Player {playerNumber}, enter name: ");
+
+                var name = Console.ReadLine().Trim();
+
+                if (name.Length > 0)
+                    return name;
+                Console.WriteLine("Please enter a valid name");
+            }
+        }
+
+        public static int EnterNumberOfPlayers()
+        {
+            while (true)
+            {
+                Console.WriteLine("How many players (2-6): ");
+
+                int.TryParse(Console.ReadLine(), out int answer);
+
+                if (answer >= 2 && answer <= 6)
+                    return answer;
+                Console.WriteLine("Please enter a valid number");
+            }
+        }
     }
 }

@@ -121,7 +121,7 @@ namespace Monopoly
 
         public void QuitGame()
         {
-            if (Prompt.YesOrNo("Do you really want to quit?"))
+            if (Prompt.YesOrNo("Do you really want to quit? (y/n)"))
                 OnChoseQuitGame();
         }
 

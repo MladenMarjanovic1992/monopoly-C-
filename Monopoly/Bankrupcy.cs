@@ -67,18 +67,19 @@ namespace Monopoly
             var allPlayerFields = _fieldsRentable.Where(f => f.Owner == player);
             var stakeHolders = GetStakeHolders(player, otherPlayers, bankruptDuringOwnTurn, liquidationValue);
 
-            OnPlayerLiquidated(player, propertiesWithHouses, allPlayerFields, stakeHolders);
+            OnPlayerLiquidated(player, propertiesWithHouses, allPlayerFields, stakeHolders, bankruptDuringOwnTurn);
         }
 
         protected virtual void OnPlayerLiquidated(Player player, IEnumerable<FieldProperty> propertyFields,
-            IEnumerable<IFieldRentable> allPlayerfields, List<Player> otherPlayers)
+            IEnumerable<IFieldRentable> allPlayerfields, List<Player> otherPlayers, bool bankruptDuringOwnTurn)
         {
             PlayerLiquidated?.Invoke(this, new PlayerLiquidatedEventArgs()
             {
                 AllPlayerFields = allPlayerfields,
                 PlayerLiquidated = player,
                 PropertyFieldsWithHouses = propertyFields,
-                StakeHolders = otherPlayers
+                StakeHolders = otherPlayers,
+                BankruptDuringOwnTurn = bankruptDuringOwnTurn
             });
         }
     }

@@ -8,7 +8,7 @@ namespace Monopoly
         public string CardMessage { get; set; }
         public int Ammount { get; set; }
 
-        public void DrawCard(Player player, IEnumerable<Player> otherPlayers)
+        public void DrawCard(Player player, List<Player> otherPlayers)
         {
             Console.WriteLine(CardMessage);
 

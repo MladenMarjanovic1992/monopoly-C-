@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -14,14 +15,42 @@ namespace Monopoly
     {
         static void Main(string[] args)
         {
-            var fields = JsonConvert.DeserializeObject<Fields>(File.ReadAllText(@"d:\Fields.json"));
+            // load fields
+            var fields = JsonConvert.DeserializeObject<Fields>(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "Fields.json")));
 
-            var player1 = new Player("Djomla", 5000, fields.OtherFields[0]);
-            var player2 = new Player("Shoux", 5000, fields.OtherFields[0]);
-            var player3 = new Player("Ile", 5000, fields.OtherFields[0]);
+            // load dice
+            var dice = new Dice();
 
-            var players = new List<Player>() { player1, player2, player3 };
-            
+            // load cards
+            var chanceCards = JsonConvert.DeserializeObject<Cards>(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "ChanceCards.json")));
+            var communityChestCards = JsonConvert.DeserializeObject<Cards>(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "CommunityChestCards.json")));
+
+            chanceCards.PrepareDeck(dice, fields.PropertyFields);
+            communityChestCards.PrepareDeck(dice, fields.PropertyFields);
+
+            foreach (var field in fields.ChanceFields)
+            {
+                field.Cards = chanceCards;
+            }
+            foreach (var field in fields.CommunityChestFields)
+            {
+                field.Cards = communityChestCards;
+            }
+
+            // welcome message
+            Console.WriteLine("Welcome to Monopoly!");
+            Console.WriteLine();
+
+            // load players
+            var numberOfPlayers = Prompt.EnterNumberOfPlayers();
+            var players = new List<Player>();
+
+            for (var i = 1; i <= numberOfPlayers; i++)
+            {
+                players.Add(new Player(Prompt.EnterPlayerName(i), 5000, fields.OtherFields[0]));
+            }
+
+            // initialize classes for buyable and buildable fields
             var utility = new Utility(fields.UtilityFields);
             var station = new Station(fields.StationFields);
             var colors = new List<Color>()
@@ -36,6 +65,7 @@ namespace Monopoly
                 new Color("Dark Blue", new List<FieldProperty>{fields.PropertyFields[20], fields.PropertyFields[21]})
             };
 
+            // initialize map
             var map = new List<IField>();
             map.AddRange(fields.PropertyFields);
             map.AddRange(fields.StationFields);
@@ -47,14 +77,19 @@ namespace Monopoly
             map.AddRange(fields.TaxFields);
             map.Sort((x, y) => x.FieldIndex.CompareTo(y.FieldIndex));
 
+            // initialize game
             var bankrupcy = new Bankrupcy(fields);
             var game = new Game(players, map, bankrupcy);
-            var dice = new Dice();
+            
             var trade = new Trade();
             var house = new House();
             var mortgage = new Mortgage();
             var choice = new Choice(game.Players, fields);
-            
+
+
+            // add events
+
+            // color events
             foreach (var color in colors)
             {
                 trade.FieldBought += color.OnFieldBought;
@@ -65,8 +100,20 @@ namespace Monopoly
                 mortgage.MortgagePayed += color.OnMortgagePayed;
             }
 
+            // card events
+            foreach (var card in chanceCards.PayMoneyToAllPlayersCards)
+            {
+                card.PayedForCard += game.OnPayedForCard;
+            }
+            foreach (var card in communityChestCards.PayMoneyToAllPlayersCards)
+            {
+                card.PayedForCard += game.OnPayedForCard;
+            }
+
+            // dice events
             dice.DiceRolled += game.OnDiceRolled;
 
+            // choice events
             choice.ChoseRoll += dice.OnChoseRoll;
             choice.ChoseEndTurn += game.OnChoseEndTurn;
             choice.ChoseQuitGame += game.OnChoseQuitGame;
@@ -76,66 +123,48 @@ namespace Monopoly
             choice.ChoseBuildHouse += house.OnChoseBuildHouse;
             choice.ChoseSellHouse += house.OnChoseSellHouse;
 
+            // trade events
             trade.FieldBought += utility.OnFieldBought;
             trade.FieldBought += station.OnFieldBought;
             trade.FieldSold += utility.OnFieldSold;
             trade.FieldSold += station.OnFieldSold;
 
+            // mortgage events
             mortgage.FieldMortgaged += utility.OnFieldMortgaged;
             mortgage.FieldMortgaged += station.OnFieldMortgaged;
             mortgage.MortgagePayed += utility.OnMortgagePayed;
             mortgage.MortgagePayed += station.OnMortgagePayed;
 
+            // bankrupcy events
             bankrupcy.PlayerLiquidated += house.OnPlayerLiquidated;
             bankrupcy.PlayerLiquidated += mortgage.OnPlayerLiquidated;
             bankrupcy.PlayerLiquidated += trade.OnPlayerLiquidated;
             bankrupcy.PlayerLiquidated += game.OnPlayerLiquidated;
 
+            // go to jail event
             fields.GoToJailFields[0].WentToJail += game.OnWentToJail;
 
+            while (!game.GameOver)
+            {
+                game.CurrentPlayer.PrintStats();
 
-            //trade.BuyField(game.CurrentPlayer, fields.PropertyFields[2], 0);
-            //trade.BuyField(game.CurrentPlayer, fields.PropertyFields[3], 0);
-            //trade.BuyField(game.CurrentPlayer, fields.PropertyFields[4], 0);
-            //trade.BuyField(game.CurrentPlayer, fields.PropertyFields[5], 0);
-            //trade.BuyField(game.CurrentPlayer, fields.PropertyFields[6], 0);
-            //trade.BuyField(game.CurrentPlayer, fields.PropertyFields[7], 0);
-            //trade.BuyField(game.CurrentPlayer, fields.PropertyFields[8], 0);
-            //trade.BuyField(game.CurrentPlayer, fields.PropertyFields[9], 0);
-            //trade.BuyField(game.CurrentPlayer, fields.PropertyFields[10], 0);
-            //trade.BuyField(game.CurrentPlayer, fields.StationFields[0], 0);
+                choice.AddAction("Use 'Get out of jail' card", choice.UseGetOutOfJailCard, game.CurrentPlayer.InJail && !game.AlreadyRolled && game.CurrentPlayer.GetOutOfJailCards > 0);
+                choice.AddAction("Roll dice", choice.Roll, !game.AlreadyRolled);
+                choice.AddAction("End turn", choice.EndTurn, game.AlreadyRolled);
+                choice.AddAction("Trade", choice.Trade, fields.BuyableFields.Any(f => f.Owner == game.CurrentPlayer && f.CanTrade));
+                choice.AddAction("Mortgage field", choice.Mortgage, fields.PropertyFields.Any(f => f.Owner == game.CurrentPlayer && f.CanMortgage));
+                choice.AddAction("Pay Mortgage", choice.PayMortgage, fields.PropertyFields.Any(f => f.Owner == game.CurrentPlayer && f.UnderMortgage));
+                choice.AddAction("Build house", choice.BuildHouse, fields.PropertyFields.Any(f => f.Owner == game.CurrentPlayer && f.CanBuild));
+                choice.AddAction("Sell house", choice.SellHouse, fields.PropertyFields.Any(f => f.Owner == game.CurrentPlayer && f.CanRemoveHouse));
+                choice.AddAction("Check field stats", choice.CheckFieldStats, true);
+                choice.AddAction("Show player stats", choice.ShowPlayerStats, true);
+                choice.AddAction("Quit game", choice.QuitGame, true);
 
-            //foreach (var field in fields.PropertyFields.Where(f => f.Owner == player1))
-            //{
-            //    field.Houses = 1;
-            //    field.CurrentRent = field.Rent[4];
-            //}
+                var command = Prompt.ChooseOption(choice.Actions, "Type first letter of command: ");
 
-            //trade.BuyField(game.Players[2], fields.PropertyFields[0], 0);
-            //trade.BuyField(game.Players[2], fields.PropertyFields[1], 0);
-
-            //while (!game.GameOver) // CHANGE ROLL BACK TO NORMAL IN DICE CLASS!!!
-            //{
-            //    game.CurrentPlayer.PrintStats();
-
-            //    choice.AddAction("Use 'Get out of jail' card", choice.UseGetOutOfJailCard, game.CurrentPlayer.InJail && !game.AlreadyRolled && game.CurrentPlayer.GetOutOfJailCards > 0);
-            //    choice.AddAction("Roll dice", choice.Roll, !game.AlreadyRolled);
-            //    choice.AddAction("End turn", choice.EndTurn, game.AlreadyRolled);
-            //    choice.AddAction("Trade", choice.Trade, fields.BuyableFields.Any(f => f.Owner == game.CurrentPlayer && f.CanTrade));
-            //    choice.AddAction("Mortgage field", choice.Mortgage, fields.PropertyFields.Any(f => f.Owner == game.CurrentPlayer && f.CanMortgage));
-            //    choice.AddAction("Pay Mortgage", choice.PayMortgage, fields.PropertyFields.Any(f => f.Owner == game.CurrentPlayer && f.UnderMortgage));
-            //    choice.AddAction("Build house", choice.BuildHouse, fields.PropertyFields.Any(f => f.Owner == game.CurrentPlayer && f.CanBuild));
-            //    choice.AddAction("Sell house", choice.SellHouse, fields.PropertyFields.Any(f => f.Owner == game.CurrentPlayer && f.CanRemoveHouse));
-            //    choice.AddAction("Check field stats", choice.CheckFieldStats, true);
-            //    choice.AddAction("Show player stats", choice.ShowPlayerStats, true);
-            //    choice.AddAction("Quit game", choice.QuitGame, true);
-
-            //    var command = Prompt.ChooseOption(choice.Actions, "Type first letter of command: ");
-
-            //    choice.Actions[command]();
-            //    choice.Actions.Clear();
-            //}
-
+                choice.Actions[command]();
+                choice.Actions.Clear();
+            }
         }
     }
 }

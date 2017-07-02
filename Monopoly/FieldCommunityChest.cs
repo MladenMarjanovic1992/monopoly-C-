@@ -7,10 +7,13 @@ namespace Monopoly
     {
         public string FieldName { get; set; }
         public int FieldIndex { get; set; }
+        public Cards Cards { get; set; }
 
         public void FieldEffect(Player currentPlayer, List<Player> otherPlayers)
         {
-            Console.WriteLine("Community Chest!");
+            PrintFieldStats();
+
+            Cards.DrawNext(currentPlayer, otherPlayers);
         }
 
         public void PrintFieldStats()

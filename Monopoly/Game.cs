@@ -92,7 +92,9 @@ namespace Monopoly
 
         public void OnPlayerLiquidated(object sender, PlayerLiquidatedEventArgs e)
         {
-            EndTurn();
+            if(e.BankruptDuringOwnTurn)
+                EndTurn();
+
             Players.Remove(e.PlayerLiquidated);
 
             if (Players.Count == 1)

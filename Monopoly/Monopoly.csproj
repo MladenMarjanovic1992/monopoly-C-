@@ -52,14 +52,14 @@
     <Compile Include="CardAdvanceToNearest.cs" />
     <Compile Include="CardAdvanceXSpaces.cs" />
     <Compile Include="Cards.cs" />
-    <Compile Include="ChanceField.cs" />
+    <Compile Include="FieldChance.cs" />
     <Compile Include="Choice.cs" />
     <Compile Include="ChoseBuildEventArgs.cs" />
     <Compile Include="ChoseMortgageEventArgs.cs" />
     <Compile Include="ChosePayMortgageEventArgs.cs" />
     <Compile Include="ChoseTradeEventArgs.cs" />
     <Compile Include="Color.cs" />
-    <Compile Include="CommunityChestField.cs" />
+    <Compile Include="FieldCommunityChest.cs" />
     <Compile Include="Dice.cs" />
     <Compile Include="DiceEventArgs.cs" />
     <Compile Include="FieldBoughtEventArgs.cs" />
@@ -86,7 +86,7 @@
     <Compile Include="MortgageSpecification.cs" />
     <Compile Include="MovedByCardEventArgs.cs" />
     <Compile Include="CardMoveToField.cs" />
-    <Compile Include="OtherFields.cs" />
+    <Compile Include="FieldOther.cs" />
     <Compile Include="OwnerSpecification.cs" />
     <Compile Include="PayedForCardEventArgs.cs" />
     <Compile Include="CardPayMoneyToAllPlayers.cs" />
@@ -97,13 +97,13 @@
     <Compile Include="Program.cs" />
     <Compile Include="Prompt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyField.cs" />
+    <Compile Include="FieldProperty.cs" />
     <Compile Include="Station.cs" />
-    <Compile Include="StationField.cs" />
-    <Compile Include="TaxField.cs" />
+    <Compile Include="FieldStation.cs" />
+    <Compile Include="FieldTax.cs" />
     <Compile Include="Trade.cs" />
     <Compile Include="Utility.cs" />
-    <Compile Include="UtilityField.cs" />
+    <Compile Include="FieldUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

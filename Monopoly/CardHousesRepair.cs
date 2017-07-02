@@ -9,13 +9,13 @@ namespace Monopoly
         public string CardMessage { get; set; }
         public int CostPerHouse { get; set; }
         public int CostPerHotel { get; set; }
-        public List<PropertyField> Fields { get; set; }
+        private List<FieldProperty> _fields;
 
-        public void DrawCard(Player player, IEnumerable<Player> otherPlayers)
+        public void DrawCard(Player player, List<Player> otherPlayers)
         {
             Console.WriteLine(CardMessage);
 
-            var fieldsOwned = Fields.Where(f => f.Owner == player);
+            var fieldsOwned = _fields.Where(f => f.Owner == player);
 
             foreach (var field in fieldsOwned)
             {
@@ -24,6 +24,11 @@ namespace Monopoly
                 else
                     player.Money -= field.Houses * CostPerHouse;
             }
+        }
+
+        public void AddFields(List<FieldProperty> fields)
+        {
+            _fields = fields;
         }
     }
 }

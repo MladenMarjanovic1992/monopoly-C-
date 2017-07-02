@@ -4,7 +4,7 @@ namespace Monopoly
 {
     public class Mortgage
     {
-        private void PutUnderMortgage(Player player, IFieldRentable field)
+        public void PutUnderMortgage(Player player, IFieldRentable field)
         {
             player.Money += field.MortgageValue;
             field.UnderMortgage = true;
@@ -13,7 +13,7 @@ namespace Monopoly
             OnFieldMortgaged(this, field);
         }
 
-        private void PayOffMortgage(Player player, IFieldRentable field)
+        public void PayOffMortgage(Player player, IFieldRentable field)
         {
             if (player.Money >= field.MortgageValue + field.MortgageValue / 10)
             {

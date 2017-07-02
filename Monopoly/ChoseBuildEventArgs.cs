@@ -5,6 +5,6 @@ namespace Monopoly
     public class ChoseBuildEventArgs : EventArgs
     {
         public Player Player { get; set; }
-        public PropertyField PropertyField { get; set; }
+        public FieldProperty PropertyField { get; set; }
     }
 }

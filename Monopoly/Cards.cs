@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Medallion;
 
 namespace Monopoly
@@ -12,6 +11,7 @@ namespace Monopoly
         public List<CardGetOutOfJail> GetOutOfJailCards { get; set; }
         public List<CardHousesRepair> HousesRepairCards { get; set; }
         public List<CardAdvanceToNearest> AdvanceToNearestCards { get; set; }
+        public List<CardAdvanceXSpaces> AdvanceXSpacesCards { get; set; }
         public List<ICard> Deck = new List<ICard>();
         public int CardsDrawn { get; set; }
 
@@ -30,14 +30,35 @@ namespace Monopoly
                 CardsDrawn = 0;
         }
 
-        public void ShuffleDeck()
+        public void PrepareDeck(Dice dice, List<FieldProperty> fields)
         {
+            // movement cards require a Dice object to move player
+            foreach (var card in MoveToFieldCards)
+            {
+                card.AddDice(dice);
+            }
+            foreach (var card in AdvanceToNearestCards)
+            {
+                card.AddDice(dice);
+            }
+            foreach (var card in AdvanceXSpacesCards)
+            {
+                card.AddDice(dice);
+            }
+
+            // house repair cards require FieldProperty list to query houses
+            foreach (var card in HousesRepairCards)
+            {
+                card.AddFields(fields);
+            }
+
             Deck.AddRange(MoveToFieldCards);
             Deck.AddRange(PayMoneyToAllPlayersCards);
             Deck.AddRange(PayOnlyPlayerCards);
             Deck.AddRange(GetOutOfJailCards);
             Deck.AddRange(HousesRepairCards);
             Deck.AddRange(AdvanceToNearestCards);
+            Deck.AddRange(AdvanceXSpacesCards);
 
             Deck.Shuffle();
         }

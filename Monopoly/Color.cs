@@ -7,9 +7,9 @@ namespace Monopoly
     {
         public string ColorName { get; set; }
         public Player Owner { get; set; }
-        public List<PropertyField> Fields { get; set; }
+        public List<FieldProperty> Fields { get; set; }
 
-        public Color(string colorName, List<PropertyField> fields)
+        public Color(string colorName, List<FieldProperty> fields)
         {
             ColorName = colorName;
             Fields = fields;

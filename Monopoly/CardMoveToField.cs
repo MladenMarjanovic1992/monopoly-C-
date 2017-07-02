@@ -9,9 +9,9 @@ namespace Monopoly
         public string CardMessage { get; set; }
         public int FieldIndex { get; set; }
         public bool WithPassingStart { get; set; }
-        public Dice Dice { get; set; }
+        private Dice _dice;
 
-        public void DrawCard(Player player, IEnumerable<Player> otherPlayers)
+        public void DrawCard(Player player, List<Player> otherPlayers)
         {
             Console.WriteLine(CardMessage);
 
@@ -28,7 +28,12 @@ namespace Monopoly
             {
                 rolled = FieldIndex - player.Position;
             }
-            Dice.Roll(rolled);
+            _dice.Roll(rolled);
+        }
+
+        public void AddDice(Dice dice)
+        {
+            _dice = dice;
         }
     }
 }

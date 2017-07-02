@@ -5,9 +5,9 @@ namespace Monopoly
 {
     public class Station
     {
-        private readonly List<StationField> _fields;
+        private readonly List<FieldStation> _fields;
 
-        public Station(List<StationField> fields)
+        public Station(List<FieldStation> fields)
         {
             _fields = fields;
         }
@@ -40,7 +40,7 @@ namespace Monopoly
             RentSetter(fields, fields.Count);
         }
 
-        private void RentSetter(List<StationField> fields, int index)
+        private void RentSetter(List<FieldStation> fields, int index)
         {
             foreach (var field in fields)
             {

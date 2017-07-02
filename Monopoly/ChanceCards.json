@@ -1,0 +1,90 @@
+﻿{
+	"MoveToFieldCards": [
+		{
+			"CardMessage": "Advance to Start, collect 200$",
+			"FieldIndex": 0,
+			"WithPassingStart": true
+		},
+		{
+			"CardMessage": "Advance to Illinois Ave. If you pass Start, collect 200$",
+			"FieldIndex": 24,
+			"WithPassingStart": true
+		},
+		{
+			"CardMessage": "Advance to St. Charles Place. If you pass Start, collect 200$",
+			"FieldIndex": 0,
+			"WithPassingStart": true
+		},
+		{
+			"CardMessage": "Go directly to Jail – Do not pass Start, do not collect $200",
+			"FieldIndex": 30,
+			"WithPassingStart": false
+		},
+		{
+			"CardMessage": "Take a trip to Reading Railroad",
+			"FieldIndex": 5,
+			"WithPassingStart": true
+		},
+		{
+			"CardMessage": "Take a walk on the Boardwalk – Advance token to Boardwalk",
+			"FieldIndex": 5,
+			"WithPassingStart": true
+		}
+	],
+	"PayMoneyToAllPlayersCards": [
+		{
+			"Ammount": -50,
+			"CardMessage": "You have been elected Chairman of the Board"
+		}
+	],
+	"PayOnlyPlayerCards": [
+		{
+			"Ammount": 50,
+			"CardMessage": "Bank pays you dividend of $50"
+		},
+		{
+			"Ammount": -15,
+			"CardMessage": "Pay poor tax of $15"
+		},
+		{
+			"Ammount": 150,
+			"CardMessage": "Your building loan matures – Collect $150"
+		},
+		{
+			"Ammount": 100,
+			"CardMessage": "You have won a crossword competition - Collect $100"
+		}
+	],
+	"GetOutOfJailCards": [
+		{
+			"CardMessage": "Get out of Jail Free Card"
+		}
+	],
+	"HousesRepairCards": [
+		{
+			"CardMessage": "Make general repairs on all your property – For each house pay $25 – For each hotel $100",
+			"CostPerHouse": 25,
+			"CostPerHotel": 100
+		}
+	],
+	"AdvanceToNearestCards": [
+		{
+			"CardMessage": "Advance token to nearest Utility",
+			"FieldIndexes": [12, 28]
+		},
+		{
+			"CardMessage": "Advance token to nearest Station",
+			"FieldIndexes": [5, 15, 25, 35]
+		},
+		{
+			"CardMessage": "Advance token to nearest Station",
+			"FieldIndexes": [5, 15, 25, 35]
+		}
+	],
+	"AdvanceXSpacesCards": [
+		{
+			"CardMessage": "Go back 3 spaces. Good luck!",
+			"Spaces": -3
+		}
+	]
+}

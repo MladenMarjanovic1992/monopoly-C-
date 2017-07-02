@@ -1,0 +1,287 @@
+﻿{
+	"PropertyFields": [
+		{
+			"FieldName": "Mediterranean Avenue",
+			"FieldIndex": 1,
+			"Color": "Brown",
+			"Price": 60,
+			"Rent": [2, 4, 10, 30, 90, 160, 250],
+			"HousePrice": 50
+		},
+		{
+			"FieldName": "Baltic Avenue",
+			"FieldIndex": 3,
+			"Color": "Brown",
+			"Price": 60,
+			"Rent": [4, 8, 20, 60, 180, 320, 450],
+			"HousePrice": 50
+		},
+		{
+			"FieldName": "Oriental Avenue",
+			"FieldIndex": 6,
+			"Color": "Light Blue",
+			"Price": 100,
+			"Rent": [6, 12, 30, 90, 270, 400, 550],
+			"HousePrice": 50
+		},
+		{
+			"FieldName": "Vermont Avenue",
+			"FieldIndex": 8,
+			"Color": "Light Blue",
+			"Price": 100,
+			"Rent": [6, 12, 30, 90, 270, 400, 550],
+			"HousePrice": 50
+		},
+		{
+			"FieldName": "Connecticut Avenue",
+			"FieldIndex": 9,
+			"Color": "Light Blue",
+			"Price": 120,
+			"Rent": [8, 16, 40, 100, 300, 450, 600],
+			"HousePrice": 50
+		},
+		{
+			"FieldName": "St. Charles Place",
+			"FieldIndex": 11,
+			"Color": "Pink",
+			"Price": 140,
+			"Rent": [10, 20, 50, 150, 450, 625, 750],
+			"HousePrice": 140
+		},
+		{
+			"FieldName": "States Avenue",
+			"FieldIndex": 13,
+			"Color": "Pink",
+			"Price": 140,
+			"Rent": [10, 20, 50, 150, 450, 625, 750],
+			"HousePrice": 140
+		},
+		{
+			"FieldName": "Virginia Avenue",
+			"FieldIndex": 14,
+			"Color": "Pink",
+			"Price": 160,
+			"Rent": [12, 24, 60, 180, 500, 700, 900],
+			"HousePrice": 100
+		},
+		{
+			"FieldName": "St. James Place",
+			"FieldIndex": 16,
+			"Color": "Orange",
+			"Price": 180,
+			"Rent": [14, 28, 70, 200, 550, 750, 950],
+			"HousePrice": 100
+		},
+		{
+			"FieldName": "Tennessee Avenue",
+			"FieldIndex": 18,
+			"Color": "Orange",
+			"Price": 180,
+			"Rent": [14, 28, 70, 200, 550, 750, 950],
+			"HousePrice": 100
+		},
+		{
+			"FieldName": "New York Avenue",
+			"FieldIndex": 19,
+			"Color": "Orange",
+			"Price": 200,
+			"Rent": [16, 32, 80, 220, 600, 800, 1000],
+			"HousePrice": 100
+		},
+		{
+			"FieldName": "Kentucky Avenue",
+			"FieldIndex": 21,
+			"Color": "Red",
+			"Price": 220,
+			"Rent": [18, 36, 90, 250, 700, 875, 1050],
+			"HousePrice": 150
+		},
+		{
+			"FieldName": "Indiana Avenue",
+			"FieldIndex": 23,
+			"Color": "Red",
+			"Price": 220,
+			"Rent": [18, 36, 90, 250, 700, 875, 1050],
+			"HousePrice": 150
+		},
+		{
+			"FieldName": "Illinois Avenue",
+			"FieldIndex": 24,
+			"Color": "Red",
+			"Price": 240,
+			"Rent": [20, 40, 100, 300, 750, 925, 1100],
+			"HousePrice": 150
+		},
+		{
+			"FieldName": "Atlantic Avenue",
+			"FieldIndex": 26,
+			"Color": "Yellow",
+			"Price": 260,
+			"Rent": [22, 44, 110, 330, 800, 975, 1150],
+			"HousePrice": 150
+		},
+		{
+			"FieldName": "Ventnor Avenue",
+			"FieldIndex": 27,
+			"Color": "Yellow",
+			"Price": 260,
+			"Rent": [22, 44, 110, 330, 800, 975, 1150],
+			"HousePrice": 150
+		},
+		{
+			"FieldName": "Marvin Gardens",
+			"FieldIndex": 29,
+			"Color": "Yellow",
+			"Price": 280,
+			"Rent": [24, 48, 120, 360, 850, 1025, 1200],
+			"HousePrice": 150
+		},
+		{
+			"FieldName": "Pacific Avenue",
+			"FieldIndex": 31,
+			"Color": "Green",
+			"Price": 300,
+			"Rent": [26, 56, 130, 390, 900, 1100, 1275],
+			"HousePrice": 200
+		},
+		{
+			"FieldName": "North Carolina Avenue",
+			"FieldIndex": 32,
+			"Color": "Green",
+			"Price": 300,
+			"Rent": [26, 56, 130, 390, 900, 1100, 1275],
+			"HousePrice": 200
+		},
+		{
+			"FieldName": "Pennsylvania Avenue",
+			"FieldIndex": 34,
+			"Color": "Green",
+			"Price": 320,
+			"Rent": [28, 56, 150, 450, 1000, 1200, 1400],
+			"HousePrice": 200
+		},
+		{
+			"FieldName": "Park Place",
+			"FieldIndex": 37,
+			"Color": "Dark Blue",
+			"Price": 350,
+			"Rent": [35, 70, 175, 500, 1100, 1300, 1500],
+			"HousePrice": 200
+		},
+		{
+			"FieldName": "Boardwalk",
+			"FieldIndex": 39,
+			"Color": "Dark Blue",
+			"Price": 400,
+			"Rent": [50, 100, 200, 600, 1400, 1700, 2000],
+			"HousePrice": 200
+		}
+		
+	],
+	"StationFields": [
+		{
+			"FieldName": "Reading Railroad",
+			"FieldIndex": 5,
+			"Color": "Station",
+			"Price": 200,
+			"Rent": [25, 50, 100, 200]
+		},
+		{
+			"FieldName": "Pennsylvania Railroad",
+			"FieldIndex": 15,
+			"Color": "Station",
+			"Price": 200,
+			"Rent": [25, 50, 100, 200]
+		},
+		{
+			"FieldName": "B&O Railroad",
+			"FieldIndex": 25,
+			"Color": "Station",
+			"Price": 200,
+			"Rent": [25, 50, 100, 200]
+		},
+		{
+			"FieldName": "Short Line",
+			"FieldIndex": 35,
+			"Color": "Station",
+			"Price": 200,
+			"Rent": [25, 50, 100, 200]
+		}
+	],
+	"UtilityFields": [
+		{
+			"FieldName": "Electric Company",
+			"FieldIndex": 12,
+			"Color": "Utility",
+			"Price": 150,
+			"Rent": [4, 10]
+		},
+		{
+			"FieldName": "Water Works",
+			"FieldIndex": 28,
+			"Color": "Utility",
+			"Price": 150,
+			"Rent": [4, 10]
+		}
+	],
+	"TaxFields": [
+		{
+			"FieldName": "Income tax",
+			"FieldIndex": 4,
+			"TaxAmount": 200
+		},
+		{
+			"FieldName": "Luxury tax",
+			"FieldIndex": 38,
+			"TaxAmount": 100
+		}
+	],
+	"ChanceFields": [
+		{
+			"FieldName": "Chance 1",
+			"FieldIndex": 7
+		},
+		{
+			"FieldName": "Chance 2",
+			"FieldIndex": 22
+		},
+		{
+			"FieldName": "Chance 3",
+			"FieldIndex": 36
+		}
+	],
+	"CommunityChestFields": [
+		{
+			"FieldName": "Community Chest 1",
+			"FieldIndex": 2
+		},
+		{
+			"FieldName": "Community Chest 2",
+			"FieldIndex": 17
+		},
+		{
+			"FieldName": "Community Chest 3",
+			"FieldIndex": 33
+		}
+	],
+	"GoToJailFields": [
+		{
+			"FieldName": "Go To Jail",
+			"FieldIndex": 30
+		}
+	],
+	"OtherFields": [
+		{
+			"FieldName": "Start",
+			"FieldIndex": 0
+		},
+		{
+			"FieldName": "Jail",
+			"FieldIndex": 10
+		},
+		{
+			"FieldName": "Free parking",
+			"FieldIndex": 20
+		}
+	]
+}

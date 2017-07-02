@@ -7,7 +7,7 @@ namespace Monopoly
     {
         public string CardMessage { get; set; }
         public int[] FieldIndexes { get; set; }
-        public Dice Dice { get; set; }
+        private Dice _dice;
 
         private int RollToField(Player player)
         {
@@ -25,11 +25,16 @@ namespace Monopoly
             return player.Position < nextField ? nextField - player.Position : 40 - player.Position + nextField;
         }
 
-        public void DrawCard(Player player, IEnumerable<Player> otherPlayers)
+        public void DrawCard(Player player, List<Player> otherPlayers)
         {
             Console.WriteLine(CardMessage);
 
-            Dice.Roll(RollToField(player));
+            _dice.Roll(RollToField(player));
+        }
+
+        public void AddDice(Dice dice)
+        {
+            _dice = dice;
         }
     }
 }

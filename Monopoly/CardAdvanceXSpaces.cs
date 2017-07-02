@@ -7,13 +7,18 @@ namespace Monopoly
     {
         public string CardMessage { get; set; }
         public int Spaces { get; set; }
-        public Dice Dice { get; set; }
+        private Dice _dice;
 
-        public void DrawCard(Player player, IEnumerable<Player> otherPlayers)
+        public void DrawCard(Player player, List<Player> otherPlayers)
         {
             Console.WriteLine(CardMessage);
 
-            Dice.Roll(Spaces);
+            _dice.Roll(Spaces);
+        }
+
+        public void AddDice(Dice dice)
+        {
+            _dice = dice;
         }
     }
 }

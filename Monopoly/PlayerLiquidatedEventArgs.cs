@@ -9,5 +9,6 @@ namespace Monopoly
         public IEnumerable<FieldProperty> PropertyFieldsWithHouses { get; set; }
         public IEnumerable<IFieldRentable> AllPlayerFields { get; set; }
         public List<Player> StakeHolders { get; set; }
+        public bool BankruptDuringOwnTurn { get; set; }
     }
 }

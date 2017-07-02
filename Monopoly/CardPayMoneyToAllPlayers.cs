@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Monopoly
 {
-    public class CardPayMoneyToAllPlayers : ICard // PayedForCard event
+    public class CardPayMoneyToAllPlayers : ICard
     {
         public int Ammount { get; set; }
         public string CardMessage { get; set; }
 
-        public void DrawCard(Player player, IEnumerable<Player> otherPlayers)
+        public void DrawCard(Player player, List<Player> otherPlayers)
         {
             Console.WriteLine(CardMessage);
 
@@ -17,7 +18,7 @@ namespace Monopoly
                 player.Money += Ammount;
                 p.Money -= Ammount;
 
-                if (Ammount < 0)
+                if (Ammount > 0)
                 {
                     OnPayedForCard(p, player);
                 }
