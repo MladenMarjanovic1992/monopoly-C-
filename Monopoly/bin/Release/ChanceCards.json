@@ -12,7 +12,7 @@
 		},
 		{
 			"CardMessage": "Advance to St. Charles Place. If you pass Start, collect 200$",
-			"FieldIndex": 0,
+			"FieldIndex": 11,
 			"WithPassingStart": true
 		},
 		{
@@ -27,14 +27,14 @@
 		},
 		{
 			"CardMessage": "Take a walk on the Boardwalk – Advance token to Boardwalk",
-			"FieldIndex": 5,
+			"FieldIndex": 39,
 			"WithPassingStart": true
 		}
 	],
 	"PayMoneyToAllPlayersCards": [
 		{
 			"Ammount": -50,
-			"CardMessage": "You have been elected Chairman of the Board"
+			"CardMessage": "You have been elected Chairman of the Board. Pay every player 50$"
 		}
 	],
 	"PayOnlyPlayerCards": [
