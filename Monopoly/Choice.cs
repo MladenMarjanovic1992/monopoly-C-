@@ -45,9 +45,8 @@ namespace Monopoly
         public void Trade()
         {
             var opponent = Prompt.ChoosePlayer(_players.Where(p => !p.CurrentPlayer).ToList(), "Trade with: ");
-            var fieldFilter = new FieldRentableFilter();
-            var opponentFields = fieldFilter.FilterFields(_fields.BuyableFields, new OwnerSpecification(opponent)).ToList();
-            var playerFields = fieldFilter.FilterFields(_fields.BuyableFields, new OwnerSpecification(_currentPlayer)).ToList();
+            var opponentFields = _fields.BuyableFields.Where(f => f.Owner == opponent && f.CanTrade).ToList();
+            var playerFields = _fields.BuyableFields.Where(f => f.Owner == _currentPlayer && f.CanTrade).ToList();
             var fieldToBuy = Prompt.ChooseField(opponentFields, "Which field do you want to buy?");
             var offerMoney = Prompt.EnterAmount(_currentPlayer, "How much money are you offering?");
             var fieldToSell = Prompt.ChooseField(playerFields, "Which field do you want to sell?");
@@ -59,7 +58,7 @@ namespace Monopoly
 
         public void Mortgage()
         {
-            var playerFields = new FieldRentableFilter().FilterFields(_fields.BuyableFields, new MortgageSpecification(_currentPlayer, true)).ToList();
+            var playerFields = _fields.BuyableFields.Where(f => f.Owner == _currentPlayer && f.CanMortgage).ToList();
             var fieldToMortgage = Prompt.ChooseField(playerFields, "Which field do you want to mortgage?");
 
             if(fieldToMortgage != null)
@@ -68,7 +67,7 @@ namespace Monopoly
 
         public void PayMortgage()
         {
-            var playerFields = new FieldRentableFilter().FilterFields(_fields.BuyableFields, new MortgageSpecification(_currentPlayer, false)).ToList();
+            var playerFields = _fields.BuyableFields.Where(f => f.Owner == _currentPlayer && !f.CanMortgage).ToList();
             var fieldToPayMortgage = Prompt.ChooseField(playerFields, "Which field do you want to pay mortgage for?");
 
             if (fieldToPayMortgage != null)
@@ -103,7 +102,7 @@ namespace Monopoly
             var player = Prompt.ChoosePlayer(_players, "Whose stats do you want to see?");
             player.PrintStats();
 
-            var fieldsOwned = new FieldRentableFilter().FilterFields(_fields.BuyableFields, new OwnerSpecification(player));
+            var fieldsOwned = _fields.BuyableFields.Where(f => f.Owner == player).ToList();
             Console.Write("Owns: ");
             foreach (var field in fieldsOwned)
             {
