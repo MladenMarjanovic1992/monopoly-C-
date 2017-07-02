@@ -11,17 +11,17 @@ namespace Monopoly
             var roll1 = _rolled.Next(1, 7);
             var roll2 = _rolled.Next(1, 7);
 
-            PrintRoll(roll1 + roll2);
+            Console.WriteLine($"Rolled: {roll1 + roll2}");
 
             OnDiceRolled(roll1, roll2);
         }
 
-        public event EventHandler<DiceEventArgs> DiceRolled;
-
-        private void PrintRoll(int roll)
+        public void Roll(int seed) // used for moving player with cards
         {
-            Console.WriteLine("Rolled: " + roll);
+            OnDiceRolled(seed, 0);
         }
+
+        public event EventHandler<DiceEventArgs> DiceRolled;
 
         public void OnChoseRoll(object sender, EventArgs e)
         {

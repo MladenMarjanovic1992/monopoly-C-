@@ -4,9 +4,9 @@ namespace Monopoly
 {
     public class Utility
     {
-        private readonly List<UtilityField> _fields;
+        private readonly List<FieldUtility> _fields;
 
-        public Utility(List<UtilityField> fields)
+        public Utility(List<FieldUtility> fields)
         {
             _fields = fields;
         }

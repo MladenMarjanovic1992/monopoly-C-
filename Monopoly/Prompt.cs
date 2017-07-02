@@ -67,7 +67,7 @@ namespace Monopoly
             }
         }
 
-        public static PropertyField ChooseField(List<PropertyField> fields, string question)
+        public static FieldProperty ChooseField(List<FieldProperty> fields, string question)
         {
             while (true)
             {

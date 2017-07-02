@@ -112,6 +112,13 @@ namespace Monopoly
             Console.WriteLine();
         }
 
+        public void UseGetOutOfJailCard()
+        {
+            _currentPlayer.InJail = false;
+            _currentPlayer.RollsUntilOut = 0;
+            _currentPlayer.GetOutOfJailCards--;
+        }
+
         public void QuitGame()
         {
             if (Prompt.YesOrNo("Do you really want to quit?"))
@@ -157,12 +164,12 @@ namespace Monopoly
             ChosePayMortgage?.Invoke(this, new ChoseMortgageEventArgs(){Field = field, Player = player});
         }
 
-        protected virtual void OnChoseBuildHouse(PropertyField field, Player player)
+        protected virtual void OnChoseBuildHouse(FieldProperty field, Player player)
         {
             ChoseBuildHouse?.Invoke(this, new ChoseBuildEventArgs(){Player = player, PropertyField = field});
         }
 
-        protected virtual void OnChoseSellHouse(PropertyField field, Player player)
+        protected virtual void OnChoseSellHouse(FieldProperty field, Player player)
         {
             ChoseSellHouse?.Invoke(this, new ChoseBuildEventArgs() { Player = player, PropertyField = field });
         }

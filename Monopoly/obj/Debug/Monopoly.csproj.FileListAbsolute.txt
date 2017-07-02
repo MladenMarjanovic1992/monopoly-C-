@@ -6,3 +6,5 @@ c:\users\maja predrevac\documents\visual studio 2017\Projects\Monopoly\Monopoly\
 c:\users\maja predrevac\documents\visual studio 2017\Projects\Monopoly\Monopoly\obj\Debug\Monopoly.pdb
 C:\Users\Maja Predrevac\Documents\Visual Studio 2017\Projects\Monopoly\Monopoly\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Maja Predrevac\Documents\Visual Studio 2017\Projects\Monopoly\Monopoly\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Maja Predrevac\Documents\Visual Studio 2017\Projects\Monopoly\Monopoly\bin\Debug\MedallionRandom.dll
+C:\Users\Maja Predrevac\Documents\Visual Studio 2017\Projects\Monopoly\Monopoly\bin\Debug\MedallionRandom.xml

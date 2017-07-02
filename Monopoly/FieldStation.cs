@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Monopoly
 {
-    public class StationField : IFieldRentable
+    public class FieldStation : IFieldRentable
     {
         public string FieldName { get; set; }
         public int FieldIndex { get; set; }
@@ -17,7 +17,7 @@ namespace Monopoly
         public bool CanMortgage { get; set; }
         public bool CanTrade { get; set; }
 
-        public StationField()
+        public FieldStation()
         {
             Rent = new int[4];
             CanMortgage = true;

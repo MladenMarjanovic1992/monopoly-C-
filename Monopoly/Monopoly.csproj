@@ -49,6 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bankrupcy.cs" />
+    <Compile Include="CardAdvanceToNearest.cs" />
+    <Compile Include="CardAdvanceXSpaces.cs" />
+    <Compile Include="Cards.cs" />
     <Compile Include="ChanceField.cs" />
     <Compile Include="Choice.cs" />
     <Compile Include="ChoseBuildEventArgs.cs" />
@@ -66,10 +69,13 @@
     <Compile Include="Fields.cs" />
     <Compile Include="FieldSoldEventArgs.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="CardGetOutOfJail.cs" />
     <Compile Include="GoToJailField.cs" />
     <Compile Include="House.cs" />
     <Compile Include="HouseBuiltEventArgs.cs" />
     <Compile Include="HouseSoldEventArgs.cs" />
+    <Compile Include="CardHousesRepair.cs" />
+    <Compile Include="ICard.cs" />
     <Compile Include="IField.cs" />
     <Compile Include="IFieldBuildable.cs" />
     <Compile Include="IFieldRentable.cs" />
@@ -78,8 +84,13 @@
     <Compile Include="MortgagePayedEventArgs.cs" />
     <Compile Include="Mortgage.cs" />
     <Compile Include="MortgageSpecification.cs" />
+    <Compile Include="MovedByCardEventArgs.cs" />
+    <Compile Include="CardMoveToField.cs" />
     <Compile Include="OtherFields.cs" />
     <Compile Include="OwnerSpecification.cs" />
+    <Compile Include="PayedForCardEventArgs.cs" />
+    <Compile Include="CardPayMoneyToAllPlayers.cs" />
+    <Compile Include="CardPayOnlyPlayer.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerLiquidatedEventArgs.cs" />
     <Compile Include="PlayerMovedEventArgs.cs" />

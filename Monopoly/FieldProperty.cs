@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Monopoly
 {
-    public class UtilityField : IFieldRentable
+    public class FieldProperty : IFieldBuildable
     {
         public string FieldName { get; set; }
         public int FieldIndex { get; set; }
@@ -17,9 +18,14 @@ namespace Monopoly
         public bool CanMortgage { get; set; }
         public bool CanTrade { get; set; }
 
-        public UtilityField()
+        public int Houses { get; set; }
+        public int HousePrice { get; set; }
+        public bool CanBuild { get; set; }
+        public bool CanRemoveHouse { get; set; }
+
+        public FieldProperty()
         {
-            Rent = new int[2];
+            Rent = new int[7];
             CanMortgage = true;
             CanTrade = true;
         }
@@ -32,13 +38,10 @@ namespace Monopoly
 
             if (Owner != null && Owner != currentPlayer && !UnderMortgage)
             {
-                var diceRoll = new Random();
-                var payedSum = CurrentRent * (diceRoll.Next(1, 7) + diceRoll.Next(1, 7));
+                currentPlayer.Money -= CurrentRent;
+                Owner.Money += CurrentRent;
 
-                currentPlayer.Money -= payedSum;
-                Owner.Money += payedSum;
-
-                Console.WriteLine($"Payed: {payedSum}");
+                Console.WriteLine($"Payed: {CurrentRent}");
             }
             else if (Owner == null)
             {
@@ -52,7 +55,6 @@ namespace Monopoly
                 else
                 {
                     Console.WriteLine("Auction!");
-                    PrintFieldStats();
                     var trade = new Trade();
                     var highestBidder = Prompt.ChoosePlayer(otherPlayers, "Which player had the highest bid (enter number)?");
                     var highestBid = Prompt.EnterAmount(highestBidder, "What was the winning bid?");
@@ -68,9 +70,18 @@ namespace Monopoly
             Console.WriteLine($"Field: {FieldName}");
             Console.WriteLine($"Field position: {FieldIndex}");
             Console.WriteLine($"Price: {Price}");
+            Console.WriteLine($"Color: {Color}");
             Console.WriteLine($"Mortgage value: {MortgageValue}");
-            Console.WriteLine("Rent: 4 x Dice roll if owned, 10 x Dice roll if monopoly");
+            Console.Write("Rent (/Owned/Monopoly/1/2/3/4/Hotel): ");
+            foreach (var i in Rent)
+            {
+                Console.Write($"/{i}");
+            }
+            Console.WriteLine();
+            Console.WriteLine($"House price: {HousePrice}");
             Console.WriteLine("Owner: {0}", Owner == null ? "Not owned" : Owner.PlayerName);
+            Console.WriteLine($"Current rent (0 if not owned): {CurrentRent}");
+            Console.WriteLine($"Houses: {Houses}");
             Console.WriteLine("Under mortgage: {0}", UnderMortgage ? "Yes" : "No");
             Console.WriteLine();
         }

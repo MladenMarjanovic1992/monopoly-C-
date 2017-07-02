@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Monopoly
 {
-    public class CommunityChestField : IField
+    public class FieldCommunityChest : IField
     {
         public string FieldName { get; set; }
         public int FieldIndex { get; set; }

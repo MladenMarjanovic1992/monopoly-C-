@@ -7,7 +7,7 @@ namespace Monopoly
     public class Bankrupcy
     {
         private readonly List<IFieldRentable> _fieldsRentable;
-        private readonly List<PropertyField> _propertyFields;
+        private readonly List<FieldProperty> _propertyFields;
 
         public Bankrupcy(Fields fields)
         {
@@ -36,26 +36,41 @@ namespace Monopoly
             return fieldsForMortgage.Sum(field => field.MortgageValue);
         }
 
-        public void Liquidate(Player player, List<Player> otherPlayers)
+        private List<Player> GetStakeHolders(Player player, List<Player> otherPlayers, bool bankruptDuringOwnTurn, int liquidationValue)
+        {
+            var stakeHolders = new List<Player>();
+
+            if (bankruptDuringOwnTurn)
+            {
+                if (_fieldsRentable.Any(f => f.FieldIndex == player.Position))
+                {
+                    var fieldOwner = _fieldsRentable.First(f => f.FieldIndex == player.Position).Owner;
+                    stakeHolders.Add(fieldOwner);
+                    fieldOwner.Money += liquidationValue;
+                }
+                else
+                    stakeHolders.AddRange(otherPlayers);
+            }
+            else
+            {
+                stakeHolders.AddRange(otherPlayers);
+                otherPlayers[0].Money += liquidationValue;
+            }
+
+            return stakeHolders;
+        }
+
+        public void Liquidate(Player player, List<Player> otherPlayers, bool bankruptDuringOwnTurn)
         {
             var liquidationValue = HousesLiquidationValue(player) + MortgageValue(player) + player.Money;
             var propertiesWithHouses = _propertyFields.Where(p => p.Owner == player && p.Houses > 0);
             var allPlayerFields = _fieldsRentable.Where(f => f.Owner == player);
-            var fieldOwner = _fieldsRentable.First(f => f.FieldIndex == player.Position).Owner;
-            var stakeHolders = new List<Player>();
-
-            if (_fieldsRentable.Any(f => f.FieldIndex == player.Position))
-            {
-                stakeHolders.Add(fieldOwner);
-                fieldOwner.Money += liquidationValue;
-            }
-            else
-                stakeHolders.AddRange(otherPlayers);
+            var stakeHolders = GetStakeHolders(player, otherPlayers, bankruptDuringOwnTurn, liquidationValue);
 
             OnPlayerLiquidated(player, propertiesWithHouses, allPlayerFields, stakeHolders);
         }
 
-        protected virtual void OnPlayerLiquidated(Player player, IEnumerable<PropertyField> propertyFields,
+        protected virtual void OnPlayerLiquidated(Player player, IEnumerable<FieldProperty> propertyFields,
             IEnumerable<IFieldRentable> allPlayerfields, List<Player> otherPlayers)
         {
             PlayerLiquidated?.Invoke(this, new PlayerLiquidatedEventArgs()

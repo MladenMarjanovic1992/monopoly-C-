@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,14 +26,14 @@ namespace Monopoly
             var station = new Station(fields.StationFields);
             var colors = new List<Color>()
             {
-                new Color("Brown", new List<PropertyField>{fields.PropertyFields[0], fields.PropertyFields[1]}),
-                new Color("Light Blue", new List<PropertyField>{fields.PropertyFields[2], fields.PropertyFields[3], fields.PropertyFields[4]}),
-                new Color("Pink", new List<PropertyField>{fields.PropertyFields[5], fields.PropertyFields[6], fields.PropertyFields[7]}),
-                new Color("Orange", new List<PropertyField>{fields.PropertyFields[8], fields.PropertyFields[9], fields.PropertyFields[10]}),
-                new Color("Red", new List<PropertyField>{fields.PropertyFields[11], fields.PropertyFields[12], fields.PropertyFields[13]}),
-                new Color("Yellow", new List<PropertyField>{fields.PropertyFields[14], fields.PropertyFields[15], fields.PropertyFields[16]}),
-                new Color("Green", new List<PropertyField>{fields.PropertyFields[17], fields.PropertyFields[18], fields.PropertyFields[19]}),
-                new Color("Dark Blue", new List<PropertyField>{fields.PropertyFields[20], fields.PropertyFields[21]})
+                new Color("Brown", new List<FieldProperty>{fields.PropertyFields[0], fields.PropertyFields[1]}),
+                new Color("Light Blue", new List<FieldProperty>{fields.PropertyFields[2], fields.PropertyFields[3], fields.PropertyFields[4]}),
+                new Color("Pink", new List<FieldProperty>{fields.PropertyFields[5], fields.PropertyFields[6], fields.PropertyFields[7]}),
+                new Color("Orange", new List<FieldProperty>{fields.PropertyFields[8], fields.PropertyFields[9], fields.PropertyFields[10]}),
+                new Color("Red", new List<FieldProperty>{fields.PropertyFields[11], fields.PropertyFields[12], fields.PropertyFields[13]}),
+                new Color("Yellow", new List<FieldProperty>{fields.PropertyFields[14], fields.PropertyFields[15], fields.PropertyFields[16]}),
+                new Color("Green", new List<FieldProperty>{fields.PropertyFields[17], fields.PropertyFields[18], fields.PropertyFields[19]}),
+                new Color("Dark Blue", new List<FieldProperty>{fields.PropertyFields[20], fields.PropertyFields[21]})
             };
 
             var map = new List<IField>();
@@ -92,7 +92,8 @@ namespace Monopoly
             bankrupcy.PlayerLiquidated += game.OnPlayerLiquidated;
 
             fields.GoToJailFields[0].WentToJail += game.OnWentToJail;
-            
+
+
             //trade.BuyField(game.CurrentPlayer, fields.PropertyFields[2], 0);
             //trade.BuyField(game.CurrentPlayer, fields.PropertyFields[3], 0);
             //trade.BuyField(game.CurrentPlayer, fields.PropertyFields[4], 0);
@@ -113,10 +114,11 @@ namespace Monopoly
             //trade.BuyField(game.Players[2], fields.PropertyFields[0], 0);
             //trade.BuyField(game.Players[2], fields.PropertyFields[1], 0);
 
-            //while (!game.GameOver)
+            //while (!game.GameOver) // CHANGE ROLL BACK TO NORMAL IN DICE CLASS!!!
             //{
             //    game.CurrentPlayer.PrintStats();
 
+            //    choice.AddAction("Use 'Get out of jail' card", choice.UseGetOutOfJailCard, game.CurrentPlayer.InJail && !game.AlreadyRolled && game.CurrentPlayer.GetOutOfJailCards > 0);
             //    choice.AddAction("Roll dice", choice.Roll, !game.AlreadyRolled);
             //    choice.AddAction("End turn", choice.EndTurn, game.AlreadyRolled);
             //    choice.AddAction("Trade", choice.Trade, fields.BuyableFields.Any(f => f.Owner == game.CurrentPlayer && f.CanTrade));
@@ -133,6 +135,7 @@ namespace Monopoly
             //    choice.Actions[command]();
             //    choice.Actions.Clear();
             //}
+
         }
     }
 }

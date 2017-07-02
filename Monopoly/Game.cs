@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Monopoly
 {
-    public class Game
+    public class Game // OnPayedForCard events
     {
         public List<Player> Players { get; set; }
         public Player CurrentPlayer { get; set; }
@@ -70,9 +70,8 @@ namespace Monopoly
             if (_bankrupcy.IsBankrupt(CurrentPlayer))
             {
                 Console.WriteLine($"{CurrentPlayer.PlayerName.ToUpper()} is bankrupt");
-                _bankrupcy.Liquidate(CurrentPlayer, otherPlayers);
+                _bankrupcy.Liquidate(CurrentPlayer, otherPlayers, true);
             }
-                
         }
 
         public void OnWentToJail(object sender, EventArgs e)
@@ -80,6 +79,15 @@ namespace Monopoly
             CurrentPlayer.Move(-(CurrentPlayer.Position - 20), _map);
             CurrentPlayer.InJail = true;
             CurrentPlayer.RollsUntilOut = 3;
+        }
+
+        public void OnPayedForCard(object sender, PayedForCardEventArgs e)
+        {
+            if (_bankrupcy.IsBankrupt(e.PlayerLiable))
+            {
+                Console.WriteLine($"{e.PlayerLiable.PlayerName.ToUpper()} is bankrupt");
+                _bankrupcy.Liquidate(e.PlayerLiable, new List<Player>(){ e.StakeHolder }, false);
+            }
         }
 
         public void OnPlayerLiquidated(object sender, PlayerLiquidatedEventArgs e)

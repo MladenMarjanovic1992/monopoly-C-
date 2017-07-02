@@ -11,6 +11,7 @@ namespace Monopoly
         public bool CurrentPlayer { get; set; }
         public bool InJail { get; set; }
         public int RollsUntilOut { get; set; }
+        public int GetOutOfJailCards { get; set; }
         private IField _field;
 
         public Player(string name, int money, IField startField)
