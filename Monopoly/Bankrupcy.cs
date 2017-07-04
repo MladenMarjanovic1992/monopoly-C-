@@ -7,12 +7,12 @@ namespace Monopoly
     public class Bankrupcy
     {
         private readonly List<IFieldRentable> _fieldsRentable;
-        private readonly List<FieldProperty> _propertyFields;
+        private readonly List<IFieldBuildable> _propertyFields;
 
         public Bankrupcy(Fields fields)
         {
             _fieldsRentable = fields.BuyableFields;
-            _propertyFields = fields.PropertyFields;
+            _propertyFields = fields.BuildableFields;
         }
 
         public event EventHandler<PlayerLiquidatedEventArgs> PlayerLiquidated;
@@ -70,7 +70,7 @@ namespace Monopoly
             OnPlayerLiquidated(player, propertiesWithHouses, allPlayerFields, stakeHolders, bankruptDuringOwnTurn);
         }
 
-        protected virtual void OnPlayerLiquidated(Player player, IEnumerable<FieldProperty> propertyFields,
+        protected virtual void OnPlayerLiquidated(Player player, IEnumerable<IFieldBuildable> propertyFields,
             IEnumerable<IFieldRentable> allPlayerfields, List<Player> otherPlayers, bool bankruptDuringOwnTurn)
         {
             PlayerLiquidated?.Invoke(this, new PlayerLiquidatedEventArgs()

@@ -31,7 +31,16 @@ namespace Monopoly
 
             for (var i = 1; i <= numberOfPlayers; i++)
             {
-                players.Add(new Player(Prompt.EnterPlayerName(i), 5000, fields.OtherFields[0]));
+                var playerName = Prompt.EnterPlayerName(i);
+
+                if (players.All(p => p.PlayerName != playerName))
+                    players.Add(new Player(playerName, 5000, fields.OtherFields[0]));
+                else
+                {
+                    Console.WriteLine("Name can't be the same as other players'");
+                    i--;
+                }
+                    
             }
 
             // initialize utility, station and colors
