@@ -34,20 +34,16 @@ namespace Monopoly
                 players.Add(new Player(Prompt.EnterPlayerName(i), 5000, fields.OtherFields[0]));
             }
 
-            // initialize classes for buyable and buildable fields
+            // initialize utility, station and colors
             var utility = new Utility(fields.UtilityFields);
             var station = new Station(fields.StationFields);
-            var colors = new List<Color>()
+
+            var colorNames = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "ColorNames.json")));
+            var colors = new List<Color>();
+            foreach (var colorName in colorNames)
             {
-                new Color("Brown", new List<FieldProperty>{fields.PropertyFields[0], fields.PropertyFields[1]}),
-                new Color("Light Blue", new List<FieldProperty>{fields.PropertyFields[2], fields.PropertyFields[3], fields.PropertyFields[4]}),
-                new Color("Pink", new List<FieldProperty>{fields.PropertyFields[5], fields.PropertyFields[6], fields.PropertyFields[7]}),
-                new Color("Orange", new List<FieldProperty>{fields.PropertyFields[8], fields.PropertyFields[9], fields.PropertyFields[10]}),
-                new Color("Red", new List<FieldProperty>{fields.PropertyFields[11], fields.PropertyFields[12], fields.PropertyFields[13]}),
-                new Color("Yellow", new List<FieldProperty>{fields.PropertyFields[14], fields.PropertyFields[15], fields.PropertyFields[16]}),
-                new Color("Green", new List<FieldProperty>{fields.PropertyFields[17], fields.PropertyFields[18], fields.PropertyFields[19]}),
-                new Color("Dark Blue", new List<FieldProperty>{fields.PropertyFields[20], fields.PropertyFields[21]})
-            };
+                colors.Add(new Color(colorName, fields.PropertyFields.Where(f => f.Color == colorName).ToList()));
+            }
 
             // initialize map
             var map = new List<IField>();
@@ -157,7 +153,7 @@ namespace Monopoly
                 choice.AddAction("Build house", choice.BuildHouse, fields.PropertyFields.Any(f => f.Owner == game.CurrentPlayer && f.CanBuild));
                 choice.AddAction("Sell house", choice.SellHouse, fields.PropertyFields.Any(f => f.Owner == game.CurrentPlayer && f.CanRemoveHouse));
                 choice.AddAction("Check field stats", choice.CheckFieldStats, true);
-                choice.AddAction("Show player stats", choice.ShowPlayerStats, true);
+                choice.AddAction("Display player stats", choice.ShowPlayerStats, true);
                 choice.AddAction("Quit game", choice.QuitGame, true);
 
                 var command = Prompt.ChooseOption(choice.Actions, "Type first letter of command: ");
