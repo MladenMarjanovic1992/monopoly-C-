@@ -21,22 +21,6 @@ namespace Monopoly
             // load dice
             var dice = new Dice();
 
-            // load cards
-            var chanceCards = JsonConvert.DeserializeObject<Cards>(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "ChanceCards.json")));
-            var communityChestCards = JsonConvert.DeserializeObject<Cards>(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "CommunityChestCards.json")));
-
-            chanceCards.PrepareDeck(dice, fields.PropertyFields);
-            communityChestCards.PrepareDeck(dice, fields.PropertyFields);
-
-            foreach (var field in fields.ChanceFields)
-            {
-                field.Cards = chanceCards;
-            }
-            foreach (var field in fields.CommunityChestFields)
-            {
-                field.Cards = communityChestCards;
-            }
-
             // welcome message
             Console.WriteLine("Welcome to Monopoly!");
             Console.WriteLine();
@@ -76,6 +60,22 @@ namespace Monopoly
             map.AddRange(fields.GoToJailFields);
             map.AddRange(fields.TaxFields);
             map.Sort((x, y) => x.FieldIndex.CompareTo(y.FieldIndex));
+
+            // load cards
+            var chanceCards = JsonConvert.DeserializeObject<Cards>(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "ChanceCards.json")));
+            var communityChestCards = JsonConvert.DeserializeObject<Cards>(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "CommunityChestCards.json")));
+
+            chanceCards.PrepareDeck(dice, fields.BuildableFields, map.Count);
+            communityChestCards.PrepareDeck(dice, fields.BuildableFields, map.Count);
+
+            foreach (var field in fields.ChanceFields)
+            {
+                field.Cards = chanceCards;
+            }
+            foreach (var field in fields.CommunityChestFields)
+            {
+                field.Cards = communityChestCards;
+            }
 
             // initialize game
             var bankrupcy = new Bankrupcy(fields);

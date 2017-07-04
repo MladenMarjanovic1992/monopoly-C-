@@ -23,11 +23,11 @@ namespace Monopoly
 
         public void Move(int rolled, List<IField> map)
         {
-            if (Position + rolled < 40)
+            if (Position + rolled < map.Count)
                 Position += rolled;
             else
             {
-                Position += rolled - 40;
+                Position += rolled - map.Count;
                 Money += 200;
             }
 

@@ -67,7 +67,7 @@ namespace Monopoly
             }
         }
 
-        public static FieldProperty ChooseField(List<FieldProperty> fields, string question)
+        public static IFieldBuildable ChooseField(List<IFieldBuildable> fields, string question)
         {
             while (true)
             {

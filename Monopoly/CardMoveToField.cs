@@ -10,6 +10,7 @@ namespace Monopoly
         public int FieldIndex { get; set; }
         public bool WithPassingStart { get; set; }
         private Dice _dice;
+        private int _mapSize;
 
         public void DrawCard(Player player, List<Player> otherPlayers)
         {
@@ -22,7 +23,7 @@ namespace Monopoly
                 if (player.Position < FieldIndex)
                     rolled = FieldIndex - player.Position;
                 else
-                    rolled = 40 - player.Position + FieldIndex;
+                    rolled = _mapSize - player.Position + FieldIndex;
             }
             else
             {
@@ -31,9 +32,10 @@ namespace Monopoly
             _dice.Roll(rolled);
         }
 
-        public void AddDice(Dice dice)
+        public void AddDiceAndMapSize(Dice dice, int mapSize)
         {
             _dice = dice;
+            _mapSize = mapSize;
         }
     }
 }

@@ -28,5 +28,17 @@ namespace Monopoly
                 return fields;
             }
         }
+
+        public List<IFieldBuildable> BuildableFields
+        {
+            get
+            {
+                var fields = new List<IFieldBuildable>();
+
+                fields.AddRange(PropertyFields);
+
+                return fields;
+            }
+        }
     }
 }

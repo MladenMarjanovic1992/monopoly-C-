@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Monopoly
 {
-    public class Game // OnPayedForCard events
+    public class Game
     {
         public List<Player> Players { get; set; }
         public Player CurrentPlayer { get; set; }
@@ -76,7 +76,7 @@ namespace Monopoly
 
         public void OnWentToJail(object sender, EventArgs e)
         {
-            CurrentPlayer.Move(-(CurrentPlayer.Position - 20), _map);
+            CurrentPlayer.Move(-(CurrentPlayer.Position - _map.FindIndex(f => f.FieldName == "Jail")), _map);
             CurrentPlayer.InJail = true;
             CurrentPlayer.RollsUntilOut = 3;
         }

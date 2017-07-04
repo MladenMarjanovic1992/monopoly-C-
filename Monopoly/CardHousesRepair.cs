@@ -9,7 +9,7 @@ namespace Monopoly
         public string CardMessage { get; set; }
         public int CostPerHouse { get; set; }
         public int CostPerHotel { get; set; }
-        private List<FieldProperty> _fields;
+        private List<IFieldBuildable> _fields;
 
         public void DrawCard(Player player, List<Player> otherPlayers)
         {
@@ -26,7 +26,7 @@ namespace Monopoly
             }
         }
 
-        public void AddFields(List<FieldProperty> fields)
+        public void AddFields(List<IFieldBuildable> fields)
         {
             _fields = fields;
         }

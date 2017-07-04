@@ -8,6 +8,7 @@ namespace Monopoly
         public string CardMessage { get; set; }
         public int[] FieldIndexes { get; set; }
         private Dice _dice;
+        private int _mapSize;
 
         private int RollToField(Player player)
         {
@@ -22,7 +23,7 @@ namespace Monopoly
                 }
             }
 
-            return player.Position < nextField ? nextField - player.Position : 40 - player.Position + nextField;
+            return player.Position < nextField ? nextField - player.Position : _mapSize - player.Position + nextField;
         }
 
         public void DrawCard(Player player, List<Player> otherPlayers)
@@ -32,9 +33,10 @@ namespace Monopoly
             _dice.Roll(RollToField(player));
         }
 
-        public void AddDice(Dice dice)
+        public void AddDiceAndMapSize(Dice dice, int mapSize)
         {
             _dice = dice;
+            _mapSize = mapSize;
         }
     }
 }

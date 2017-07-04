@@ -76,7 +76,7 @@ namespace Monopoly
 
         public void BuildHouse()
         {
-            var buildableFields = _fields.PropertyFields.Where(f => f.Owner == _currentPlayer && f.CanBuild).ToList();
+            var buildableFields = _fields.BuildableFields.Where(f => f.Owner == _currentPlayer && f.CanBuild).ToList();
             var fieldToBuild = Prompt.ChooseField(buildableFields, "Which field do you want to build on?");
 
             if(fieldToBuild != null)
@@ -85,7 +85,7 @@ namespace Monopoly
 
         public void SellHouse()
         {
-            var unbuildableFields = _fields.PropertyFields.Where(f => f.Owner == _currentPlayer && f.CanRemoveHouse).ToList();
+            var unbuildableFields = _fields.BuildableFields.Where(f => f.Owner == _currentPlayer && f.CanRemoveHouse).ToList();
             var fieldToUnbuild = Prompt.ChooseField(unbuildableFields, "Where do you want to sell a house?");
 
             if(fieldToUnbuild != null)
@@ -163,12 +163,12 @@ namespace Monopoly
             ChosePayMortgage?.Invoke(this, new ChoseMortgageEventArgs(){Field = field, Player = player});
         }
 
-        protected virtual void OnChoseBuildHouse(FieldProperty field, Player player)
+        protected virtual void OnChoseBuildHouse(IFieldBuildable field, Player player)
         {
             ChoseBuildHouse?.Invoke(this, new ChoseBuildEventArgs(){Player = player, PropertyField = field});
         }
 
-        protected virtual void OnChoseSellHouse(FieldProperty field, Player player)
+        protected virtual void OnChoseSellHouse(IFieldBuildable field, Player player)
         {
             ChoseSellHouse?.Invoke(this, new ChoseBuildEventArgs() { Player = player, PropertyField = field });
         }
