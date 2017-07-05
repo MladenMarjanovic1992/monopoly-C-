@@ -15,6 +15,7 @@ namespace Monopoly
         public List<FieldGoToJail> GoToJailFields { get; set; }
         public List<FieldOther> OtherFields { get; set; }
 
+        // Fields which can be bought and traded
         public List<IFieldRentable> BuyableFields
         {
             get
@@ -29,6 +30,7 @@ namespace Monopoly
             }
         }
 
+        // Only fields which can have houses
         public List<IFieldBuildable> BuildableFields
         {
             get

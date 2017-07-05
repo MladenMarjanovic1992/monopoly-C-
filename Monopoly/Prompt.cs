@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Monopoly
 {
-    public class Prompt
+    public class Prompt // takes player input
     {
         public static bool YesOrNo(string question)
         {

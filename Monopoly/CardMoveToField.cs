@@ -9,33 +9,36 @@ namespace Monopoly
         public string CardMessage { get; set; }
         public int FieldIndex { get; set; }
         public bool WithPassingStart { get; set; }
-        private Dice _dice;
         private int _mapSize;
+
+        public event EventHandler<MovedByCardEventArgs> MovedByCard;
+
+        private int RollToField(Player player)
+        {
+            if (WithPassingStart) // Some Cards move the player by letting him pass start, others move him directly to the field
+            {
+                if (player.Position < FieldIndex)
+                    return FieldIndex - player.Position;
+                return _mapSize - player.Position + FieldIndex;
+            }
+            return FieldIndex - player.Position;
+        }
 
         public void DrawCard(Player player, List<Player> otherPlayers)
         {
             Console.WriteLine(CardMessage);
 
-            int rolled;
-
-            if (WithPassingStart)
-            {
-                if (player.Position < FieldIndex)
-                    rolled = FieldIndex - player.Position;
-                else
-                    rolled = _mapSize - player.Position + FieldIndex;
-            }
-            else
-            {
-                rolled = FieldIndex - player.Position;
-            }
-            _dice.Roll(rolled);
+            OnMovedByCard(RollToField(player));
         }
 
-        public void AddDiceAndMapSize(Dice dice, int mapSize)
+        public void AddMapSize(int mapSize)
         {
-            _dice = dice;
             _mapSize = mapSize;
+        }
+
+        protected virtual void OnMovedByCard(int rollToNearestField)
+        {
+            MovedByCard?.Invoke(this, new MovedByCardEventArgs() { RollToField = rollToNearestField });
         }
     }
 }

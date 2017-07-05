@@ -70,8 +70,8 @@ namespace Monopoly
             var chanceCards = JsonConvert.DeserializeObject<Cards>(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "ChanceCards.json")));
             var communityChestCards = JsonConvert.DeserializeObject<Cards>(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "CommunityChestCards.json")));
 
-            chanceCards.PrepareDeck(dice, fields.BuildableFields, map.Count);
-            communityChestCards.PrepareDeck(dice, fields.BuildableFields, map.Count);
+            chanceCards.PrepareDeck(fields.BuildableFields, map.Count);
+            communityChestCards.PrepareDeck(fields.BuildableFields, map.Count);
 
             foreach (var field in fields.ChanceFields)
             {
@@ -114,6 +114,30 @@ namespace Monopoly
             {
                 card.PayedForCard += game.OnPayedForCard;
             }
+            foreach (var card in chanceCards.MoveToFieldCards)
+            {
+                card.MovedByCard += dice.OnMovedByCard;
+            }
+            foreach (var card in chanceCards.AdvanceToNearestCards)
+            {
+                card.MovedByCard += dice.OnMovedByCard;
+            }
+            foreach (var card in chanceCards.AdvanceXSpacesCards)
+            {
+                card.MovedByCard += dice.OnMovedByCard;
+            }
+            foreach (var card in communityChestCards.MoveToFieldCards)
+            {
+                card.MovedByCard += dice.OnMovedByCard;
+            }
+            foreach (var card in communityChestCards.AdvanceToNearestCards)
+            {
+                card.MovedByCard += dice.OnMovedByCard;
+            }
+            foreach (var card in communityChestCards.AdvanceXSpacesCards)
+            {
+                card.MovedByCard += dice.OnMovedByCard;
+            }
 
             // dice events
             dice.DiceRolled += game.OnDiceRolled;
@@ -149,10 +173,12 @@ namespace Monopoly
             // go to jail event
             fields.GoToJailFields[0].WentToJail += game.OnWentToJail;
 
+            // gameplay
             while (!game.GameOver)
             {
                 game.CurrentPlayer.PrintStats();
 
+                // condition used to add only available choices
                 choice.AddAction("Use 'Get out of jail' card", choice.UseGetOutOfJailCard, game.CurrentPlayer.InJail && !game.AlreadyRolled && game.CurrentPlayer.GetOutOfJailCards > 0);
                 choice.AddAction("Roll dice", choice.Roll, !game.AlreadyRolled);
                 choice.AddAction("End turn", choice.EndTurn, game.AlreadyRolled);

@@ -7,18 +7,19 @@ namespace Monopoly
     {
         public string CardMessage { get; set; }
         public int Spaces { get; set; }
-        private Dice _dice;
+
+        public event EventHandler<MovedByCardEventArgs> MovedByCard;
 
         public void DrawCard(Player player, List<Player> otherPlayers)
         {
             Console.WriteLine(CardMessage);
 
-            _dice.Roll(Spaces);
+            OnMovedByCard(Spaces);
         }
 
-        public void AddDice(Dice dice)
+        protected virtual void OnMovedByCard(int rollToNearestField)
         {
-            _dice = dice;
+            MovedByCard?.Invoke(this, new MovedByCardEventArgs() { RollToField = rollToNearestField });
         }
     }
 }

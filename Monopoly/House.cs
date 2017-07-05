@@ -2,7 +2,7 @@ using System;
 
 namespace Monopoly
 {
-    public class House
+    public class House // handles building houses
     {
         private void BuildHouse(Player player, IFieldBuildable field)
         {

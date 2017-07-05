@@ -2,7 +2,7 @@
 
 namespace Monopoly
 {
-    public class Mortgage
+    public class Mortgage // handles mortgaging properties
     {
         public void PutUnderMortgage(Player player, IFieldRentable field)
         {
@@ -40,11 +40,13 @@ namespace Monopoly
             PayOffMortgage(e.Player, e.Field);
         }
 
+        // Rule: When the player is bankrupt all his remaining fields are mortgaged to settle the debt
         public void OnPlayerLiquidated(object sender, PlayerLiquidatedEventArgs e)
         {
             foreach (var field in e.AllPlayerFields)
             {
-                PutUnderMortgage(e.PlayerLiquidated, field);
+                if(!field.UnderMortgage)
+                    PutUnderMortgage(e.PlayerLiquidated, field);
             }
         }
 

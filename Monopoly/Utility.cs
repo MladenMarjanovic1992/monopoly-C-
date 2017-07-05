@@ -2,7 +2,7 @@
 
 namespace Monopoly
 {
-    public class Utility
+    public class Utility // changes the state of Utility fields depending on the circumstances
     {
         private readonly List<FieldUtility> _fields;
 

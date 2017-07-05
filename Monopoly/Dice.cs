@@ -23,6 +23,11 @@ namespace Monopoly
 
         public event EventHandler<DiceEventArgs> DiceRolled;
 
+        public void OnMovedByCard(object sender, MovedByCardEventArgs e)
+        {
+            Roll(e.RollToField);
+        }
+
         public void OnChoseRoll(object sender, EventArgs e)
         {
             Roll();

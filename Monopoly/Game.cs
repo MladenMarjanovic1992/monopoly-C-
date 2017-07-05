@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Monopoly
 {
-    public class Game
+    public class Game // handles the current player's turn
     {
         public List<Player> Players { get; set; }
         public Player CurrentPlayer { get; set; }
@@ -41,8 +41,10 @@ namespace Monopoly
             AlreadyRolled = false;
         }
 
+        // dice event - when the dice are rolled
         public void OnDiceRolled(object sender, DiceEventArgs e)
         {
+            // Rule: If the player is in jail, he can leave immediately if he rolls equal number dice
             while (CurrentPlayer.InJail && CurrentPlayer.RollsUntilOut > 0)
             {
                 if (e.Rolled1 != e.Rolled2)
@@ -62,11 +64,14 @@ namespace Monopoly
 
             var otherPlayers = Players.Where(p => !p.CurrentPlayer).ToList();
 
+            // Other players are needed for auctions, bankrupcies and cards which affect all players
             _map[CurrentPlayer.Position].FieldEffect(CurrentPlayer, otherPlayers);
 
+            // Rule: Player rolls again if both dice are the same number
             if (e.Rolled1 != e.Rolled2)
                 AlreadyRolled = true;
 
+            // Checks if the player is bankrupt after FieldEffect
             if (_bankrupcy.IsBankrupt(CurrentPlayer))
             {
                 Console.WriteLine($"{CurrentPlayer.PlayerName.ToUpper()} is bankrupt");
@@ -74,15 +79,18 @@ namespace Monopoly
             }
         }
 
+        // Event for GoToJail field
         public void OnWentToJail(object sender, EventArgs e)
         {
             CurrentPlayer.Move(-(CurrentPlayer.Position - _map.FindIndex(f => f.FieldName == "Jail")), _map);
             CurrentPlayer.InJail = true;
-            CurrentPlayer.RollsUntilOut = 3;
+            CurrentPlayer.RollsUntilOut = 3; // Rule: Player stays in jail for 3 turns
         }
 
+        // Event triggered by paying for a Card drawn by the current player (for instance "Doctor's fee - Pay 50$")
         public void OnPayedForCard(object sender, PayedForCardEventArgs e)
         {
+            // Checks the player who payed if he is bankrupt (not necessarily the current player)
             if (_bankrupcy.IsBankrupt(e.PlayerLiable))
             {
                 Console.WriteLine($"{e.PlayerLiable.PlayerName.ToUpper()} is bankrupt");
@@ -104,6 +112,7 @@ namespace Monopoly
             }
         }
 
+        // choice events
         public void OnChoseEndTurn(object sender, EventArgs e)
         {
             if(CurrentPlayer.Money >= 0)

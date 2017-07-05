@@ -30,6 +30,7 @@ namespace Monopoly
         {
             PrintFieldStats();
 
+            // Rule: Player must pay rent for an owned field when he lands on it
             if (Owner != null && Owner != currentPlayer && !UnderMortgage)
             {
                 currentPlayer.Money -= CurrentRent;
@@ -41,6 +42,7 @@ namespace Monopoly
             {
                 var buysField = Prompt.YesOrNo("Buy field? (y/n)") && currentPlayer.Money >= Price;
 
+                // Rule: Player can buy unowned field when he lands on it
                 if (buysField)
                 {
                     var trade = new Trade();
@@ -49,7 +51,13 @@ namespace Monopoly
                 else
                 {
                     Console.WriteLine("Auction!");
-                    PrintFieldStats();
+
+                    foreach (var player in otherPlayers) // So the players know how much they can bid
+                    {
+                        player.PrintStats();
+                    }
+
+                    // Rule: When the player can't afford a field, or doesn't want to buy it, the field is auctioned to other players
                     var trade = new Trade();
                     var highestBidder = Prompt.ChoosePlayer(otherPlayers, "Which player had the highest bid (enter number)?");
                     var highestBid = Prompt.EnterAmount(highestBidder, "What was the winning bid?");

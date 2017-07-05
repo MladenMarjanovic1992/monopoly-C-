@@ -8,6 +8,7 @@ namespace Monopoly
         public string FieldName { get; set; }
         public int FieldIndex { get; set; }
 
+        // These fields have no effect on the player
         public void FieldEffect(Player currentPlayer, List<Player> otherPlayers)
         {
             PrintFieldStats();

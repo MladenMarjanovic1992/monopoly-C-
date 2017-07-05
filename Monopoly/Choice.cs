@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Monopoly
 {
-    public class Choice
+    public class Choice // uses player input to trigger appropriate events
     {
         private Player _currentPlayer;
         private readonly List<Player> _players;

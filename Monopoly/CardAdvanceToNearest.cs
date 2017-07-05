@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 namespace Monopoly
 {
-    public class CardAdvanceToNearest : ICard
+    public class CardAdvanceToNearest : ICard // These cards send the player to the nearest field of specified kind (example FieldStation, FieldUtility)
     {
         public string CardMessage { get; set; }
-        public int[] FieldIndexes { get; set; }
-        private Dice _dice;
+        public int[] FieldIndexes { get; set; } // Indices of specified Fields
         private int _mapSize;
+
+        public event EventHandler<MovedByCardEventArgs> MovedByCard; 
 
         private int RollToField(Player player)
         {
@@ -30,13 +31,17 @@ namespace Monopoly
         {
             Console.WriteLine(CardMessage);
 
-            _dice.Roll(RollToField(player));
+            OnMovedByCard(RollToField(player));
         }
 
-        public void AddDiceAndMapSize(Dice dice, int mapSize)
+        public void AddMapSize(int mapSize)
         {
-            _dice = dice;
             _mapSize = mapSize;
+        }
+
+        protected virtual void OnMovedByCard(int rollToNearestField)
+        {
+            MovedByCard?.Invoke(this, new MovedByCardEventArgs(){RollToField = rollToNearestField});
         }
     }
 }

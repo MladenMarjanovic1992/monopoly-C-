@@ -2,7 +2,7 @@
 
 namespace Monopoly
 {
-    public class Trade
+    public class Trade // handles trading of properties
     {
         public void BuyField(Player player, IFieldRentable field, int price)
         {
@@ -36,17 +36,19 @@ namespace Monopoly
             }
         }
 
+        // Rule: When a player is bankruptad by another player, all his properties go to the other player
         public void OnPlayerLiquidated(object sender, PlayerLiquidatedEventArgs e)
         {
             foreach (var field in e.AllPlayerFields)
             {
                 SellField(e.PlayerLiquidated, field, 0);
 
-                if (e.StakeHolders.Count == 1)
-                    BuyField(e.StakeHolders[0], field, 0);
+                if (e.StakeHolders.Count == 1) 
+                    BuyField(e.StakeHolders[0], field, 0); // Rule: All bankrupted player's fields are transfered to the player who bankrupted him
                 else
                 {
-                    foreach (var player in e.StakeHolders)
+                    // Rule: When the player is bankrupted by the bank, his properties are auctioned off by the bank to the other players
+                    foreach (var player in e.StakeHolders) // So the players know how much they can bid
                     {
                         player.PrintStats();
                     }

@@ -30,20 +30,16 @@ namespace Monopoly
                 CardsDrawn = 0;
         }
 
-        public void PrepareDeck(Dice dice, List<IFieldBuildable> fields, int mapSize)
+        public void PrepareDeck(List<IFieldBuildable> fields, int mapSize)
         {
-            // movement cards require a Dice object to move player
+            // movement cards require map size to move the player
             foreach (var card in MoveToFieldCards)
             {
-                card.AddDiceAndMapSize(dice, mapSize);
+                card.AddMapSize(mapSize);
             }
             foreach (var card in AdvanceToNearestCards)
             {
-                card.AddDiceAndMapSize(dice, mapSize);
-            }
-            foreach (var card in AdvanceXSpacesCards)
-            {
-                card.AddDice(dice);
+                card.AddMapSize(mapSize);
             }
 
             // house repair cards require FieldProperty list to query houses

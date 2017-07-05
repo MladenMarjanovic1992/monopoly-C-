@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Monopoly
 {
-    public class Station
+    public class Station // changes the state of Station fields depending on the circumstances
     {
         private readonly List<FieldStation> _fields;
 

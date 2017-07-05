@@ -6,8 +6,8 @@ namespace Monopoly
 {
     public class Bankrupcy
     {
-        private readonly List<IFieldRentable> _fieldsRentable;
-        private readonly List<IFieldBuildable> _propertyFields;
+        private readonly List<IFieldRentable> _fieldsRentable; // necessary for mortgage
+        private readonly List<IFieldBuildable> _propertyFields; // necessary for liquidating houses
 
         public Bankrupcy(Fields fields)
         {
@@ -26,7 +26,7 @@ namespace Monopoly
         {
             var propertiesWithHouses = _propertyFields.Where(p => p.Owner == player && p.Houses > 0);
 
-            return propertiesWithHouses.Sum(field => field.HousePrice / 2);
+            return propertiesWithHouses.Sum(field => field.HousePrice / 2); // Rule: Liquidation value for houses is half the house price
         }
 
         private int MortgageValue(Player player)
@@ -36,23 +36,26 @@ namespace Monopoly
             return fieldsForMortgage.Sum(field => field.MortgageValue);
         }
 
+        // Stakeholders are players which are affected by a player's bankrupcy (can be either 1 player, or all players except the bankrupted player)
         private List<Player> GetStakeHolders(Player player, List<Player> otherPlayers, bool bankruptDuringOwnTurn, int liquidationValue)
         {
             var stakeHolders = new List<Player>();
 
-            if (bankruptDuringOwnTurn)
+            if (bankruptDuringOwnTurn) // 2 Possible cases based on game rules
             {
+                // Case 1: Player lands on owned field => Rule: All his remaining money and property go to the field owner
                 if (_fieldsRentable.Any(f => f.FieldIndex == player.Position))
                 {
                     var fieldOwner = _fieldsRentable.First(f => f.FieldIndex == player.Position).Owner;
                     stakeHolders.Add(fieldOwner);
                     fieldOwner.Money += liquidationValue;
                 }
-                else
+                else // Case 2: Player is bankrupted by the bank (Example: Tax field, Chance card etc.) Rule: Bank auctions off all his properties
                     stakeHolders.AddRange(otherPlayers);
             }
-            else
-            {
+            else // Only one Scenario: The Current player has drawn a Card which requires all players to pay him money
+            {   
+                // Rule: If the player can't afford to pay, all his property and remaining money go to the player who drew the card
                 stakeHolders.AddRange(otherPlayers);
                 otherPlayers[0].Money += liquidationValue;
             }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Monopoly
 {
-    public class Color
+    public class Color // changes the state of fields belonging to the same color depending on the circumstances
     {
         public string ColorName { get; set; }
         public Player Owner { get; set; }
@@ -14,6 +14,17 @@ namespace Monopoly
             ColorName = colorName;
             Fields = fields;
         }
+
+        // Rules for building: A player can only build houses on a field if certain conditions are met:
+        //  1) He owns all fields of the same color
+        //  2) None of the fields of that color is under mortgage
+        //  3) None of the fields of that color have fewer houses on them than that field
+        //  3) The field has fewer than 5 houses
+
+        // Rule for selling houses: A house can't be sold on fields which have fewer houses than other fields of the same color
+
+        // Rules for selling/mortgaging a field:
+        //  1) A field can only be sold/mortgaged if none of the fields of that color have houses build
 
         public void OnFieldBought(object sender, FieldBoughtEventArgs e)
         {
